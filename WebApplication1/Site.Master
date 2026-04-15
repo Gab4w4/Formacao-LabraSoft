@@ -15,8 +15,8 @@
         </header>
 
         <nav style="background: #eee; padding: 10px; margin-bottom: 20px;">
-            <a href="BolsistaExemplo.aspx">Início (Teste)</a> | 
-            <a href="CadastroBolsista.aspx">Novo Cadastro</a>
+            <a href="CadastroBolsista.aspx">Novo Cadastro</a> |
+            <a href="CadastroCoordenador.aspx">Novo Cadastro Coordenador</a>
         </nav>
 
 

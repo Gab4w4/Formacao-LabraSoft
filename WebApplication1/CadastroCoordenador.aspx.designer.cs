@@ -11,62 +11,62 @@ namespace WebApplication1
 {
 
 
-    public partial class CadastroBolsista
+    public partial class CadastroCoordenador
     {
 
         /// <summary>
-        /// Controle txtNome.
+        /// Controle txtNomeCoord.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNome;
+        protected global::System.Web.UI.WebControls.TextBox txtNomeCoord;
 
         /// <summary>
-        /// Controle txtMatricula.
+        /// Controle txtTitulacao.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMatricula;
+        protected global::System.Web.UI.WebControls.TextBox txtTitulacao;
 
         /// <summary>
-        /// Controle txtCPF.
+        /// Controle txtCPFCoord.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCPF;
+        protected global::System.Web.UI.WebControls.TextBox txtCPFCoord;
 
         /// <summary>
-        /// Controle txtDataNasc.
+        /// Controle txtAreaDeAtuacao.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDataNasc;
+        protected global::System.Web.UI.WebControls.TextBox txtAreaDeAtuacao;
 
         /// <summary>
-        /// Controle ddlSexo.
+        /// Controle txtEmailCoord.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSexo;
+        protected global::System.Web.UI.WebControls.TextBox txtEmailCoord;
 
         /// <summary>
-        /// Controle btnSalvar.
+        /// Controle btnSalvarCoord.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSalvar;
+        protected global::System.Web.UI.WebControls.Button btnSalvarCoord;
 
         /// <summary>
         /// Controle btnLimpar.
@@ -78,49 +78,40 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button btnLimpar;
 
         /// <summary>
-        /// Controle plButtonFiltro.
+        /// Controle plCoordenadores.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel plButtonFiltro;
+        protected global::System.Web.UI.WebControls.Panel plCoordenadores;
 
         /// <summary>
-        /// Controle btnFiltrarMulheres.
+        /// Controle txtFiltroNomeTitulacao.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrarMulheres;
+        protected global::System.Web.UI.WebControls.TextBox txtFiltroNomeTitulacao;
 
         /// <summary>
-        /// Controle btnOrdemAlfabetica.
+        /// Controle btnFiltroNomeTitulacao.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnOrdemAlfabetica;
+        protected global::System.Web.UI.WebControls.Button btnFiltroNomeTitulacao;
 
         /// <summary>
-        /// Controle btnRecarregarLista.
+        /// Controle gridCoordenadores.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRecarregarLista;
-
-        /// <summary>
-        /// Controle gridBolsistas.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridBolsistas;
+        protected global::System.Web.UI.WebControls.GridView gridCoordenadores;
 
         /// <summary>
         /// Controle lblAvisoGrid.
