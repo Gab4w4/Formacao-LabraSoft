@@ -8,13 +8,26 @@ namespace WebApplication1
     public partial class CadastroBolsista : System.Web.UI.Page
     {
 
-        private static List<Bolsista> listaBolsistas = new List<Bolsista>();
+        private static List<Bolsista> listaBolsistas = new List<Bolsista>(){
+            new Bolsista { Nome = "Romário Souza", CPF = "010.010.010-11", Matricula = "B0011", DataNascimento = new DateTime(2006, 08, 08), Sexo = "M"},
+            new Bolsista { Nome = "Ana Souza", CPF = "111.111.111-11", Matricula = "B001", DataNascimento = new DateTime(2000, 5, 10), Sexo = "F" },
+            new Bolsista { Nome = "Bruno Lima", CPF = "222.222.222-22", Matricula = "B002", DataNascimento = new DateTime(1999, 8, 20), Sexo = "M" },
+            new Bolsista { Nome = "Carla Mendes", CPF = "333.333.333-33", Matricula = "B003", DataNascimento = new DateTime(2001, 2, 15), Sexo = "F" },
+            new Bolsista { Nome = "Daniel Rocha", CPF = "444.444.444-44", Matricula = "B004", DataNascimento = new DateTime(1998, 12, 1), Sexo = "M" },
+            new Bolsista { Nome = "Eduarda Alves", CPF = "555.555.555-55", Matricula = "B005", DataNascimento = new DateTime(2002, 7, 30), Sexo = "F" },
+            new Bolsista { Nome = "Felipe Santos", CPF = "666.666.666-66", Matricula = "B006", DataNascimento = new DateTime(2000, 3, 25), Sexo = "M" },
+            new Bolsista { Nome = "Gabriela Costa", CPF = "777.777.777-77", Matricula = "B007", DataNascimento = new DateTime(2001, 11, 5), Sexo = "F" },
+            new Bolsista { Nome = "Henrique Martins", CPF = "888.888.888-88", Matricula = "B008", DataNascimento = new DateTime(1997, 6, 18), Sexo = "M" },
+            new Bolsista { Nome = "Isabela Ferreira", CPF = "999.999.999-99", Matricula = "B009", DataNascimento = new DateTime(2003, 9, 9), Sexo = "F" },
+            new Bolsista { Nome = "João Pereira", CPF = "000.000.000-00", Matricula = "B010", DataNascimento = new DateTime(1999, 1, 12), Sexo = "M" }
+        };
         protected void Page_Load(object sender, EventArgs e)
         {
             // Na primeira vez que a página carrega, podemos querer exibir a lista 
             if (!IsPostBack)
             {
                 AtualizarGrid();
+                
             }
         }
 
@@ -101,12 +114,32 @@ namespace WebApplication1
 
                 lblAvisoGrid.Visible = false;
                 gridBolsistas.Visible = true;
+                plButtonFiltro.Visible = true;
             }
             else
             {
+                plButtonFiltro.Visible=false;
                 lblAvisoGrid.Visible = true;
                 gridBolsistas.Visible = false;
             }
+        }
+
+        protected void btnRecarregarLista_Click(object sender, EventArgs e)
+        {
+            gridBolsistas.DataSource= listaBolsistas;
+            gridBolsistas.DataBind();
+        }
+            
+        protected void btnFiltrarMulheres_Click(object sender, EventArgs e)
+        {
+            gridBolsistas.DataSource = listaBolsistas.Where(x => x.Sexo == "F").ToList();
+            gridBolsistas.DataBind();
+        }
+
+        protected void btnOrdemAlfabetica_Click(object sender, EventArgs e)
+        {
+            gridBolsistas.DataSource = listaBolsistas.OrderBy(x => x.Nome).ToList();
+            gridBolsistas.DataBind();
         }
     }
 }

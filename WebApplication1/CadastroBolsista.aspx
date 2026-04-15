@@ -53,6 +53,14 @@
                 <hr />
                 <div class="mt-5">
                     <h3 class="text-secondary">📋 Lista de Bolsistas Cadastrados</h3>
+                    
+                    <asp:Panel ID="plButtonFiltro" runat="server" style="display:flex; justify-content:center; gap:15px">
+                        <asp:Button ID="btnFiltrarMulheres" CssClass="btn btn-primary" onClick="btnFiltrarMulheres_Click" runat="server" Text ="Filtrar Mulheres" />
+                        <asp:Button ID="btnOrdemAlfabetica" CssClass="btn btn-primary" onClick="btnOrdemAlfabetica_Click" runat="server" Text ="Ordem Alfabética" />
+                        <asp:Button ID="btnRecarregarLista" CssClass="btn btn-primary" onClick="btnRecarregarLista_Click" runat="server" Text ="Recarregar Lista" />
+                    </asp:Panel>
+                    <%--style="display:flex; justify-content:center; gap:15px"--%>
+                    <br />
     
                     <asp:GridView ID="gridBolsistas" runat="server" 
                         CssClass="table table-hover table-striped border" 
@@ -62,7 +70,7 @@
                     </asp:GridView>
 
                     <asp:Label ID="lblAvisoGrid" runat="server" Text="Nenhum bolsista na memória." 
-                        CssClass="text-muted italic" Visible="false"></asp:Label>
+                        CssClass=" text-muted italic" Visible="false"></asp:Label>
                 </div>
 
                 <div class="mt-4 text-center">
