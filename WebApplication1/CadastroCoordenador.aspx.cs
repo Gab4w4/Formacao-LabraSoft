@@ -10,102 +10,7 @@ namespace WebApplication1
 {
     public partial class CadastroCoordenador : System.Web.UI.Page
     {
-        private static List<Coordenador> listaCoordenadores = new List<Coordenador>()
-        {
-            new Coordenador
-            {
-                Id = 1,
-                Nome = "Ana Souza",
-                CPF = "123.456.789-00",
-                Titulacao = "Doutora",
-                AreaAtuacao = "Engenharia de Software",
-                Email = "ana.souza@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 2,
-                Nome = "Carlos Lima",
-                CPF = "234.567.890-11",
-                Titulacao = "Mestre",
-                AreaAtuacao = "Banco de Dados",
-                Email = "carlos.lima@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 3,
-                Nome = "Mariana Oliveira",
-                CPF = "345.678.901-22",
-                Titulacao = "Doutora",
-                AreaAtuacao = "Inteligência Artificial",
-                Email = "mariana.oliveira@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 4,
-                Nome = "João Pereira",
-                CPF = "456.789.012-33",
-                Titulacao = "Especialista",
-                AreaAtuacao = "Redes de Computadores",
-                Email = "joao.pereira@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 5,
-                Nome = "Fernanda Costa",
-                CPF = "567.890.123-44",
-                Titulacao = "Mestre",
-                AreaAtuacao = "Segurança da Informação",
-                Email = "fernanda.costa@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 6,
-                Nome = "Ricardo Alves",
-                CPF = "678.901.234-55",
-                Titulacao = "Doutor",
-                AreaAtuacao = "Sistemas Distribuídos",
-                Email = "ricardo.alves@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 7,
-                Nome = "Juliana Martins",
-                CPF = "789.012.345-66",
-                Titulacao = "Especialista",
-                AreaAtuacao = "Desenvolvimento Web",
-                Email = "juliana.martins@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 8,
-                Nome = "Bruno Rocha",
-                CPF = "890.123.456-77",
-                Titulacao = "Mestre",
-                AreaAtuacao = "Computação em Nuvem",
-                Email = "bruno.rocha@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 9,
-                Nome = "Patrícia Gomes",
-                CPF = "901.234.567-88",
-                Titulacao = "Doutora",
-                AreaAtuacao = "Ciência de Dados",
-                Email = "patricia.gomes@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 10,
-                Nome = "Eduardo Nunes",
-                CPF = "012.345.678-99",
-                Titulacao = "Especialista",
-                AreaAtuacao = "Arquitetura de Software",
-                Email = "eduardo.nunes@exemplo.com"
-            }
-                };
-            
-            
-         
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Na primeira vez que a página carrega, podemos querer exibir a lista 
@@ -140,7 +45,7 @@ namespace WebApplication1
                 novo.Email = txtEmailCoord.Text;
 
                 //1.5 Lógica provisória para não cadastrar o mesmo usuário duas vezes
-                if (listaCoordenadores.Any(b => b.CPF == txtCPFCoord.Text))
+                if (Repositorio.ListaCoordenadores.Any(b => b.CPF == txtCPFCoord.Text))
                 {
                     lblMensagem.Text = "⚠️ Este Coordenador já foi cadastrado!";
                     lblMensagem.CssClass = "alert alert-warning d-block";
@@ -150,7 +55,7 @@ namespace WebApplication1
                 }
 
                 // 2. ADICIONAR NA LISTA ESTÁTICA
-                listaCoordenadores.Add(novo);
+                Repositorio.ListaCoordenadores.Add(novo);
 
                 // 3. Limpar os campos para o próximo cadastro
                 LimparCampos();
@@ -189,10 +94,10 @@ namespace WebApplication1
 
         private void AtualizarGrid()
         {
-            if (listaCoordenadores.Count > 0)
+            if (Repositorio.ListaCoordenadores.Count > 0)
             {
                 // 1. Dizemos ao Grid qual é a fonte de dados (nossa lista)
-                gridCoordenadores.DataSource = listaCoordenadores;
+                gridCoordenadores.DataSource = Repositorio.ListaCoordenadores;
 
                 // 2. O DataBind() "desenha" as linhas da tabela no HTML
                 gridCoordenadores.DataBind();
@@ -211,7 +116,7 @@ namespace WebApplication1
 
 
         protected void btnBuscarNomeTitulacao_Click(object sender, EventArgs e) {
-            gridCoordenadores.DataSource = listaCoordenadores.Where(c => c.Nome.Contains(txtFiltroNomeTitulacao.Text) || c.Titulacao.Contains(txtFiltroNomeTitulacao.Text)).ToList();
+            gridCoordenadores.DataSource = Repositorio.ListaCoordenadores.Where(c => c.Nome.Contains(txtFiltroNomeTitulacao.Text) || c.Titulacao.Contains(txtFiltroNomeTitulacao.Text)).ToList();
             gridCoordenadores.DataBind();
         } 
     }
