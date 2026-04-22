@@ -15,6 +15,7 @@ namespace WebApplication1
             if (!IsPostBack)
             {
                 CarregarListas();
+                AtualizarGrid();
             }
         }
 
@@ -122,9 +123,31 @@ namespace WebApplication1
             }
             else
             {
-                
                 lblAvisoGrid.Visible = true;
                 gridProjetos.Visible = false;
+            }
+        }
+
+        protected void gridDetalhar_OnClick(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detalhes")
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+
+                // Fonte de dados original (ex: sua lista)
+                var lista = (List<Projeto>)Session["Projetos"]; // ou onde você armazenou
+
+                Projeto projeto = lista[index];
+
+                panelDetalhes.Visible = true;
+
+                litDetalhes.Text = $@"
+                    <b>Título:</b> {projeto.Titulo} <br/>
+                    <b>Área:</b> {projeto.AreaDeConhecimento} <br/>
+                    <b>Coordenador:</b> {projeto.Coordenador.Nome} <br/>
+                    <b>Bolsistas:</b> {string.Join(", ", projeto.Bolsistas.Select(b => b.Nome))} <br/>
+                    <b>Verba:</b> {projeto.VerbaAprovada:C}
+                ";  
             }
         }
     }

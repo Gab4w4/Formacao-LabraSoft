@@ -115,6 +115,36 @@ namespace WebApplication1.Models
             }
                 };
 
-        public static List<Projeto> ListaProjetos = new List<Projeto>();
-    }
+        public static List<Projeto> ListaProjetos = new List<Projeto>() {
+            new Projeto
+            {
+                Titulo = "Sistema Inteligente de Monitoramento Ambiental",
+                AreaDeConhecimento = "Ciência da Computação",
+                VerbaAprovada = 50000f,
+                ValorDeBolsaIndividual = 1200f,
+                Coordenador = ListaCoordenadores[2],
+                Bolsistas = new List<Bolsista>
+                {
+                    ListaBolsistas[3],
+                    ListaBolsistas[4],
+                    ListaBolsistas[5]
+                }
+            },
+            new Projeto
+            {
+                Titulo = "Análise de Dados para Saúde Pública",
+                AreaDeConhecimento = "Ciência de Dados",
+                VerbaAprovada = 75000f,
+                ValorDeBolsaIndividual = 1500f,
+                Coordenador = ListaCoordenadores[0], 
+                Bolsistas = new List<Bolsista>
+                {
+                    ListaBolsistas[0],
+                    ListaBolsistas[1],
+                    ListaBolsistas[2]
+                }
+            }
+
+        };
+    }    
 }

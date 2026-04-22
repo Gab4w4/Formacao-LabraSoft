@@ -40,7 +40,7 @@
             <div>
                 <label class="form-label font-weight-bold">Bolsistas: </label>
                 <div style="height:150px; overflow-y:auto; border:1px solid #ccc; padding:5px;">
-                    <asp:CheckBoxList ID="cblListaBolsistas" runat="server" RepeatLayout="Table" RepeatColumns="3" CellPadding="6" CellSpacing="3" TextAlign="Right"/>
+                    <asp:CheckBoxList ID="cblListaBolsistas" runat="server" RepeatLayout="Table" RepeatColumns="8" CellPadding="6" CellSpacing="3" TextAlign="Right"/>
 
                 </div>
             </div>
@@ -55,20 +55,44 @@
             <hr />
             <div class="mt-5">
                 <h3 class="text-secondary">📋 Lista de Projetos Cadastrados</h3>
-                
-                
-              
+         
                 <br />
 
                 <asp:GridView ID="gridProjetos" runat="server" 
                     CssClass="table table-hover table-striped border" 
-                    AutoGenerateColumns="true" 
-                    GridLines="None">
+                    AutoGenerateColumns="false" 
+                    >
+                    <Columns>
+                        <asp:BoundField DataField="Titulo" HeaderText="Título" />
+                        <asp:BoundField DataField="AreaDeConhecimento" HeaderText="AreaConhecimento" />
+                        <asp:BoundField DataField="VerbaAprovada" HeaderText="VerbaAprovada" />
+                        <asp:BoundField DataField="ValorDeBolsaIndividual" HeaderText="BolsaIndividual" />
+
+                       
+
+                        <asp:ButtonField 
+                            Text="Detalhes"
+                            CommandName="Detalhes"
+                            ButtonType="Button" />
+
+                        
+                    </Columns>
                     <HeaderStyle CssClass="thead-dark" />
                 </asp:GridView>
 
+                <asp:Panel ID="panelDetalhes" runat="server" Visible="false">
+                    <asp:Literal ID="litDetalhes" runat="server"></asp:Literal>
+                </asp:Panel>
+
+
+
                 <asp:Label ID="lblAvisoGrid" runat="server" Text="Nenhum projeto na memória." 
                     CssClass=" text-muted italic" Visible="false"></asp:Label>
+
+              
+
+
+                   
             </div>
 
             <div class="mt-4 text-center">
