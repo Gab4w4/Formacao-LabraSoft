@@ -73,7 +73,8 @@
                         <asp:ButtonField 
                             Text="Detalhes"
                             CommandName="Detalhes"
-                            ButtonType="Button" />
+                            ButtonType="Button"
+                            />
 
                         
                     </Columns>
