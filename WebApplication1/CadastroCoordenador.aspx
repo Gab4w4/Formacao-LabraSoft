@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastroCoordenador.aspx.cs" Inherits="WebApplication1.CadastroCoordenador" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container mt-5">
-        <div class="card shadow-sm mx-auto" style="max-width: 900px;">
+        <div class="card shadow-sm mx-auto w-100">
             <div class="card-header bg-primary text-white text-center">
                 <h2 class="mb-0">📝 Cadastro de Coordernadores</h2>
             </div>

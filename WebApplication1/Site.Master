@@ -15,8 +15,9 @@
         </header>
 
         <nav style="background: #eee; padding: 10px; margin-bottom: 20px;">
-            <a href="CadastroBolsista.aspx">Novo Cadastro</a> |
-            <a href="CadastroCoordenador.aspx">Novo Cadastro Coordenador</a>
+            <a href="CadastroBolsista.aspx">Cadastrar Bolsista</a> |
+            <a href="CadastroCoordenador.aspx">Cadastrar Coordenador</a> |
+            <a href="CadastroProjeto.aspx">Cadastrar Projetos</a>
         </nav>
 
 
@@ -27,3 +28,4 @@
     </form>
 </body>
 </html>
+
