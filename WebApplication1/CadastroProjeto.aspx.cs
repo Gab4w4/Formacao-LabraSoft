@@ -88,7 +88,7 @@ namespace WebApplication1
             {
                 item.Selected = false;
             }
-            txtTituloProjeto.Focus(); // Coloca o cursor de volta no Nome
+            txtTituloProjeto.Focus();
         }
 
         protected void btnLimpar_Click(Object sender, EventArgs e)
@@ -111,10 +111,8 @@ namespace WebApplication1
         {
             if (Repositorio.ListaProjetos.Count > 0)
             {
-                // 1. Dizemos ao Grid qual é a fonte de dados (nossa lista)
                 gridProjetos.DataSource = Repositorio.ListaProjetos;
 
-                // 2. O DataBind() "desenha" as linhas da tabela no HTML
                 gridProjetos.DataBind();
 
                 lblAvisoGrid.Visible = false;
@@ -134,21 +132,40 @@ namespace WebApplication1
             {
                 int index = Convert.ToInt32(e.CommandArgument);
 
-                // Fonte de dados original (ex: sua lista)
-                var lista = (List<Projeto>)Session["Projetos"]; // ou onde você armazenou
+                var lista = Repositorio.ListaProjetos;
 
                 Projeto projeto = lista[index];
 
                 panelDetalhes.Visible = true;
 
                 litDetalhes.Text = $@"
-                    <b>Título:</b> {projeto.Titulo} <br/>
-                    <b>Área:</b> {projeto.AreaDeConhecimento} <br/>
-                    <b>Coordenador:</b> {projeto.Coordenador.Nome} <br/>
-                    <b>Bolsistas:</b> {string.Join(", ", projeto.Bolsistas.Select(b => b.Nome))} <br/>
-                    <b>Verba:</b> {projeto.VerbaAprovada:C}
-                ";  
+                    <div class='row mb-2'>
+                        <div class='col-md-6'><b>Título:</b> {projeto.Titulo}</div>
+                        <div class='col-md-6'><b>Área:</b> {projeto.AreaDeConhecimento}</div>
+                    </div>
+
+                    <div class='row mb-2'>
+                        <div class='col-md-6'><b>Coordenador:</b> {projeto.Coordenador.Nome}</div>
+                        <div class='col-md-6'><b>Verba:</b> {projeto.VerbaAprovada:C}</div>
+                    </div>
+
+                    <div class='row mb-2'>
+                        <div class='col-md-6'><b>Bolsa Individual:</b> {projeto.ValorDeBolsaIndividual:C}</div>
+                    </div>
+
+                    <div class='mt-3'>
+                        <b>Bolsistas:</b><br/>
+                        <span class='text-muted'>
+                            {string.Join(", ", projeto.Bolsistas.Select(b => b.Nome))}
+                        </span>
+                    </div>
+                ";
             }
+        }
+
+        protected void btnFecharDetalhes_Click(object sender, EventArgs e)
+        {
+            panelDetalhes.Visible = false;
         }
     }
 }

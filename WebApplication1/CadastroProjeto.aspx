@@ -60,7 +60,8 @@
 
                 <asp:GridView ID="gridProjetos" runat="server" 
                     CssClass="table table-hover table-striped border" 
-                    AutoGenerateColumns="false" 
+                    AutoGenerateColumns="false"
+                    OnRowCommand="gridDetalhar_OnClick"
                     >
                     <Columns>
                         <asp:BoundField DataField="Titulo" HeaderText="Título" />
@@ -70,19 +71,44 @@
 
                        
 
-                        <asp:ButtonField 
-                            Text="Detalhes"
-                            CommandName="Detalhes"
-                            ButtonType="Button"
-                            />
+                        <asp:TemplateField HeaderText="Ações">
+                            <ItemTemplate>
+                                <asp:Button 
+                                    ID="btnDetalhes" 
+                                    runat="server" 
+                                    Text="Detalhes" 
+                                    CssClass="btn btn-info btn-sm"
+                                    CommandName="Detalhes"
+                                    CommandArgument='<%# Container.DataItemIndex %>' />
+                            </ItemTemplate>
+                        </asp:TemplateField>
 
                         
                     </Columns>
                     <HeaderStyle CssClass="thead-dark" />
                 </asp:GridView>
 
-                <asp:Panel ID="panelDetalhes" runat="server" Visible="false">
-                    <asp:Literal ID="litDetalhes" runat="server"></asp:Literal>
+                <asp:Panel ID="panelDetalhes" runat="server" Visible="false" CssClass="mt-4">
+    
+                    <div class="card border-info shadow-sm">
+        
+                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">📌 Dados do Projeto</h5>
+
+                            <asp:Button 
+                                ID="btnFecharDetalhes" 
+                                runat="server" 
+                                Text="✖" 
+                                CssClass="btn btn-light btn-sm"
+                                OnClick="btnFecharDetalhes_Click" />
+                        </div>
+
+                        <div class="card-body">
+                            <asp:Literal ID="litDetalhes" runat="server"></asp:Literal>
+                        </div>
+
+                    </div>
+
                 </asp:Panel>
 
 
