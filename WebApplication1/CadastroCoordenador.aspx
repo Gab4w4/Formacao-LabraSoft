@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container mt-5">
-        <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card shadow-sm mx-auto w-100">
             <div class="card-header bg-dark text-white text-center">
                 <h2 class="mb-0">👨‍🏫 Cadastro de Coordenador</h2>
             </div>
@@ -44,6 +44,12 @@
                     <asp:Button ID="btnSalvar" runat="server" Text="Cadastrar Coordenador" 
                         CssClass="btn btn-dark btn-lg w-100" OnClick="btnSalvar_Click" />
                 </div>
+                
+                <asp:Panel ID="plCoordenadores" CssClass="input-group mb-3 mt-3" runat="server">
+                    <asp:TextBox ID="txtFiltroNomeTitulacao" runat="server" CssClass="form-control" placeholder="Busque pelo nome ou a titulação"></asp:TextBox>
+                    <br />
+                    <asp:Button ID="btnFiltroNomeTitulacao" CssClass="btn btn-primary" runat="server" OnClick="btnBuscarNomeTitulacao_Click" Text="Buscar" />
+                </asp:Panel> 
 
                 <hr />
 
