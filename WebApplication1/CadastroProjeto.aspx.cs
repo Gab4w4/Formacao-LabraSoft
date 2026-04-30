@@ -10,6 +10,7 @@ namespace WebApplication1
 {
     public partial class CadastroProjeto : System.Web.UI.Page
     {
+        private Repositorio repositorio = new Repositorio();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -22,16 +23,16 @@ namespace WebApplication1
         private void CarregarDadosIniciais()
         {
             // Preenche Coordenadores
-            ddlCoordenador.DataSource = Repositorio.ListaCoordenadores;
+            ddlCoordenador.DataSource = repositorio.ListarCoordernadores();
             ddlCoordenador.DataTextField = "Nome";
-            ddlCoordenador.DataValueField = "CPF";
+            ddlCoordenador.DataValueField = "ID";
             ddlCoordenador.DataBind();
             ddlCoordenador.Items.Insert(0, new ListItem("Selecione um Coordenador...", ""));
 
             // Preenche Alunos
-            lstAlunos.DataSource = Repositorio.ListaBolsistas;
+            lstAlunos.DataSource = repositorio.ListarBolsistas();
             lstAlunos.DataTextField = "Nome";
-            lstAlunos.DataValueField = "CPF";
+            lstAlunos.DataValueField = "ID";
             lstAlunos.DataBind();
         }
 
@@ -54,21 +55,25 @@ namespace WebApplication1
                 p.ValorBolsaIndividual = valorBolsa;
 
                 // Relacionamento com Coordenador
-                string cpfCoord = ddlCoordenador.SelectedValue;
-                p.Responsavel = Repositorio.ListaCoordenadores.FirstOrDefault(c => c.CPF == cpfCoord);
+           
+                p.CoordenadorID = int.Parse(ddlCoordenador.SelectedValue);
 
+
+                var id_projeto = repositorio.CadastrarProjeto(p);
+                
                 // Relacionamento com Bolsistas (Lista)
                 foreach (ListItem item in lstAlunos.Items)
                 {
                     if (item.Selected)
                     {
-                        var aluno = Repositorio.ListaBolsistas.FirstOrDefault(b => b.CPF == item.Value);
-                        if (aluno != null) p.AlunosVinculados.Add(aluno);
+                        var alunoVinculado = int.Parse(item.Value);
+                        repositorio.CadastrarAlunosVinculados(alunoVinculado, id_projeto);
                     }
                 }
 
                 // Salvar e atualizar
-                Repositorio.ListaProjetos.Add(p);
+
+                
                 LimparCampos();
                 AtualizarGrid();
             }
@@ -91,7 +96,7 @@ namespace WebApplication1
 
         private void AtualizarGrid()
         {
-            gridProjetos.DataSource = Repositorio.ListaProjetos;
+            gridProjetos.DataSource = repositorio.ListarProjetos();
             gridProjetos.DataBind();
         }
 
@@ -100,29 +105,38 @@ namespace WebApplication1
             if (e.CommandName == "VerDetalhes")
             {
                 int index = Convert.ToInt32(e.CommandArgument);
-                var projeto = Repositorio.ListaProjetos[index];
+                int idProjeto = Convert.ToInt32(gridProjetos.DataKeys[index].Value);
 
-                // Preenche campos básicos
-                litTituloDet.Text = projeto.Titulo;
-                lblCoordDet.Text = projeto.Responsavel?.Nome ?? "Não definido";
-                lblTitDet.Text = projeto.Responsavel?.Titulacao;
-                lblVerbaDet.Text = projeto.VerbaAprovada.ToString("C");
-                lblBolsaDet.Text = projeto.ValorBolsaIndividual.ToString("C"); // Novo campo
-                lblAreaDet.Text = projeto.AreaConhecimento;
+                var projeto = repositorio.BuscarProjetoId(idProjeto);
+                
+                if (projeto != null) {
 
-                // Preenche o Repeater com a lista de bolsistas
-                if (projeto.AlunosVinculados != null && projeto.AlunosVinculados.Count > 0)
-                {
-                    rptBolsistasDet.DataSource = projeto.AlunosVinculados;
-                    rptBolsistasDet.DataBind();
-                    rptBolsistasDet.Visible = true;
-                    lblSemBolsistas.Visible = false;
+                    // Preenche campos básicos
+                    litTituloDet.Text = projeto.Titulo;
+                    lblCoordDet.Text = projeto.Responsavel?.Nome ?? "Não definido";
+                    lblTitDet.Text = projeto.Responsavel?.Titulacao;
+                    lblVerbaDet.Text = projeto.VerbaAprovada.ToString("C");
+                    lblBolsaDet.Text = projeto.ValorBolsaIndividual.ToString("C"); // Novo campo
+                    lblAreaDet.Text = projeto.AreaConhecimento;
+
+                    var alunos = repositorio.listarBolsistasProjeto(idProjeto);
+                    
+                    // Preenche o Repeater com a lista de bolsistas
+                    if (alunos.Count > 0)
+                    {
+                        rptBolsistasDet.DataSource = alunos;
+                        rptBolsistasDet.DataBind();
+                        rptBolsistasDet.Visible = true;
+                        lblSemBolsistas.Visible = false;
+                    }
+                    else
+                    {
+                        rptBolsistasDet.Visible = false;
+                        lblSemBolsistas.Visible = true;
+                    }
+
                 }
-                else
-                {
-                    rptBolsistasDet.Visible = false;
-                    lblSemBolsistas.Visible = true;
-                }
+
 
                 pnlDetalhes.Visible = true;
             }

@@ -72,7 +72,7 @@
                     <asp:GridView ID="gridBolsistas" runat="server" 
                         CssClass="table table-hover table-striped border" 
                         AutoGenerateColumns="true" 
-                        GridLines="None">
+                        GridLines="None" DataKeyNames="ID">
                         <HeaderStyle CssClass="thead-dark" />
                     </asp:GridView>
 

@@ -49,7 +49,7 @@
         <div class="mt-5">
             <h4>Projetos em Andamento</h4>
             <asp:GridView ID="gridProjetos" runat="server" CssClass="table table-hover table-bordered shadow-sm" 
-                AutoGenerateColumns="false" OnRowCommand="gridProjetos_RowCommand">
+                AutoGenerateColumns="false" DataKeyNames="Id" OnRowCommand="gridProjetos_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="Titulo" HeaderText="Projeto" />
                     <asp:BoundField DataField="AreaConhecimento" HeaderText="Área" />

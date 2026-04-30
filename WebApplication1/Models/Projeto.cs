@@ -6,7 +6,8 @@ using System.Web;
 namespace WebApplication1.Models
 {
     public class Projeto
-    {
+    {   
+        public int ID { get; set; }
         public string Titulo { get; set; }
         public string AreaConhecimento { get; set; }
 
@@ -17,6 +18,7 @@ namespace WebApplication1.Models
         // COMPOSIÇÃO (Relacionamentos)
         public Coordenador Responsavel { get; set; } // 1 Coordenador
         public List<Bolsista> AlunosVinculados { get; set; } // Vários Bolsistas
+        public int CoordenadorID { get; set; }
 
         public Projeto()
         {

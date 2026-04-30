@@ -7,6 +7,8 @@ namespace WebApplication1
 {
     public partial class CadastroBolsista : System.Web.UI.Page
     {
+
+        private Repositorio repositorio = new Repositorio();
         protected void Page_Load(object sender, EventArgs e)
         {
             // Na primeira vez que a página carrega, podemos querer exibir a lista 
@@ -39,6 +41,8 @@ namespace WebApplication1
                 novo.Sexo = ddlSexo.SelectedValue;
                 novo.DataNascimento = DateTime.Parse(txtDataNasc.Text);
 
+                repositorio.CadastrarBolsista(novo);
+
                 //1.5 Lógica provisória para não cadastrar o mesmo usuário duas vezes
                 if (Repositorio.ListaBolsistas.Any(b => b.CPF == txtCPF.Text))
                 {
@@ -50,7 +54,7 @@ namespace WebApplication1
                 }
 
                 // 2. ADICIONAR NA LISTA ESTÁTICA
-                Repositorio.ListaBolsistas.Add(novo);
+                
 
                 // 3. Limpar os campos para o próximo cadastro
                 LimparCampos();
@@ -89,7 +93,7 @@ namespace WebApplication1
 
         private void AtualizarGrid()
         {
-            var listaBolsistas = Repositorio.ListaBolsistas;
+            var listaBolsistas = repositorio.ListarBolsistas();
             if (listaBolsistas.Count > 0)
             {
                 gridBolsistas.DataSource = listaBolsistas;
@@ -114,23 +118,21 @@ namespace WebApplication1
         // 1. FILTRO: Mostra apenas quem tem Sexo == "F"
         protected void btnFiltrarMulheres_Click(object sender, EventArgs e)
         {
-            var listaBolsistas = Repositorio.ListaBolsistas;
-            var resultado = listaBolsistas.Where(x => x.Sexo == "F").ToList();
+            var listaBolsistasMulheres = repositorio.FiltrarMulheres();
 
-            gridBolsistas.DataSource = resultado;
+            gridBolsistas.DataSource = listaBolsistasMulheres;
             gridBolsistas.DataBind();
 
-            lblMensagem.Text = $"Exibindo {resultado.Count} mulheres encontradas.";
+            lblMensagem.Text = $"Exibindo {listaBolsistasMulheres.Count} mulheres encontradas.";
             lblMensagem.CssClass = "alert alert-info d-block";
         }
 
         // 2. ORDENAÇÃO: Organiza a lista por nome
         protected void btnOrdemAlfabetica_Click(object sender, EventArgs e)
         {
-            var listaBolsistas = Repositorio.ListaBolsistas;
-            var resultado = listaBolsistas.OrderBy(x => x.Nome).ToList();
+            var listaBolsistas = repositorio.OrdemAlfabeticaBolsistas();
 
-            gridBolsistas.DataSource = resultado;
+            gridBolsistas.DataSource = listaBolsistas;
             gridBolsistas.DataBind();
 
             lblMensagem.Text = "Lista organizada por ordem alfabética.";

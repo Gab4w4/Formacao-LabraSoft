@@ -57,7 +57,7 @@
                     <h4 class="text-secondary">Lista de Coordenadores</h4>                    
                     <asp:GridView ID="gridCoordenadores" runat="server" 
                         CssClass="table table-hover table-bordered mt-2" 
-                        AutoGenerateColumns="true">
+                        AutoGenerateColumns="true" DataKeyNames="ID">
                         <HeaderStyle CssClass="table-dark" />
                     </asp:GridView>
                     <asp:Label ID="lblAviso" runat="server" Text="Nenhum coordenador cadastrado." CssClass="text-muted small italic"></asp:Label>
