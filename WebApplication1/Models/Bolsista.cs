@@ -12,11 +12,11 @@ namespace WebApplication1.Models
         public DateTime DataNascimento { get; set; }
         public int ProjetoID { get; set; }
 
-        // Construtor: Define valores iniciais ao dar 'new'
+
         public Bolsista()
         {
-            this.DataNascimento = DateTime.Today; // Garante hora 00:00:00
-            this.Sexo = "M"; // Valor padrão para evitar nulos
+            this.DataNascimento = DateTime.Today; 
+            this.Sexo = "M";
         }
 
         public string ObterResumo()

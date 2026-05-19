@@ -109,6 +109,7 @@ namespace WebApplication1
 
                 var projeto = repositorio.BuscarProjetoId(idProjeto);
                 
+                
                 if (projeto != null) {
 
                     // Preenche campos básicos
@@ -120,6 +121,7 @@ namespace WebApplication1
                     lblAreaDet.Text = projeto.AreaConhecimento;
 
                     var alunos = repositorio.listarBolsistasProjeto(idProjeto);
+                    
                     
                     // Preenche o Repeater com a lista de bolsistas
                     if (alunos.Count > 0)
@@ -133,6 +135,20 @@ namespace WebApplication1
                     {
                         rptBolsistasDet.Visible = false;
                         lblSemBolsistas.Visible = true;
+                    }
+
+                    var despesas = repositorio.listarDespesas(idProjeto);
+                    if (despesas.Count > 0)
+                    {
+                        rptDespesas.DataSource = despesas;
+                        rptDespesas.DataBind();
+                        rptDespesas.Visible = true;
+                        lblSemDespesas.Visible = false;
+                    }
+                    else
+                    {
+                        rptDespesas.Visible = false;
+                        lblSemDespesas.Visible = true;
                     }
 
                 }

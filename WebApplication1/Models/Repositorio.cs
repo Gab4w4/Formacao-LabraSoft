@@ -259,6 +259,25 @@ namespace WebApplication1.Models
             }
         }
 
+        public void AdicionarDespesa(Despesa despesa)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "INSERT INTO Despesa(Descricao, Valor, DataDespesa, Categoria, ProjetoID) VALUES (@Descricao, @Valor, @DataDespesa, @Categoria, @ProjetoID)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@Descricao", despesa.Descricao);
+                cmd.Parameters.AddWithValue("@Valor", despesa.Valor);
+                cmd.Parameters.AddWithValue("@DataDespesa", despesa.DataDespesa);
+                cmd.Parameters.AddWithValue("@Categoria", despesa.Categoria);
+                cmd.Parameters.AddWithValue("@ProjetoID", despesa.ProjetoID);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+        }
+
         public Projeto BuscarProjetoId(int id)
         {
             using (SqlConnection connection = new SqlConnection(bdConnection))
@@ -315,6 +334,35 @@ namespace WebApplication1.Models
                 }
 
             }return bolsistas;
+        }
+
+        public List<Despesa> listarDespesas(int pID)
+        {
+            List<Despesa> despesas = new List<Despesa>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Descricao, Valor, DataDespesa, Categoria FROM Despesa WHERE ProjetoID = @pID";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@pID", pID);
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    despesas.Add(new Despesa
+                    {
+                        Descricao = reader["Descricao"].ToString(),
+                        Valor = Convert.ToDecimal(reader["Valor"]),
+                        DataDespesa = Convert.ToDateTime(reader["DataDespesa"]),
+                        Categoria = reader["Categoria"].ToString()
+                    });
+                }
+
+            }
+            return despesas;
         }
 
     }
