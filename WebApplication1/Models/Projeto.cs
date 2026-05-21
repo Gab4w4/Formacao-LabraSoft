@@ -14,7 +14,7 @@ namespace WebApplication1.Models
         
         public decimal VerbaAprovada { get; set; }
         public decimal ValorBolsaIndividual { get; set; }
-
+        public decimal Saldo { get; set; }
        
         public Coordenador Responsavel { get; set; } 
         public List<Bolsista> AlunosVinculados { get; set; } 

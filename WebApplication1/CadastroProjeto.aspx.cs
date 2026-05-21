@@ -30,10 +30,12 @@ namespace WebApplication1
             ddlCoordenador.Items.Insert(0, new ListItem("Selecione um Coordenador...", ""));
 
             // Preenche Alunos
-            lstAlunos.DataSource = repositorio.ListarBolsistas();
+            lstAlunos.DataSource = repositorio.ListarBolsistasDisponiveis();
             lstAlunos.DataTextField = "Nome";
             lstAlunos.DataValueField = "ID";
             lstAlunos.DataBind();
+
+            
         }
 
         protected void btnSalvarProjeto_Click(object sender, EventArgs e)
@@ -107,55 +109,64 @@ namespace WebApplication1
                 int index = Convert.ToInt32(e.CommandArgument);
                 int idProjeto = Convert.ToInt32(gridProjetos.DataKeys[index].Value);
 
-                var projeto = repositorio.BuscarProjetoId(idProjeto);
-                
-                
-                if (projeto != null) {
-
-                    // Preenche campos básicos
-                    litTituloDet.Text = projeto.Titulo;
-                    lblCoordDet.Text = projeto.Responsavel?.Nome ?? "Não definido";
-                    lblTitDet.Text = projeto.Responsavel?.Titulacao;
-                    lblVerbaDet.Text = projeto.VerbaAprovada.ToString("C");
-                    lblBolsaDet.Text = projeto.ValorBolsaIndividual.ToString("C"); // Novo campo
-                    lblAreaDet.Text = projeto.AreaConhecimento;
-
-                    var alunos = repositorio.listarBolsistasProjeto(idProjeto);
-                    
-                    
-                    // Preenche o Repeater com a lista de bolsistas
-                    if (alunos.Count > 0)
-                    {
-                        rptBolsistasDet.DataSource = alunos;
-                        rptBolsistasDet.DataBind();
-                        rptBolsistasDet.Visible = true;
-                        lblSemBolsistas.Visible = false;
-                    }
-                    else
-                    {
-                        rptBolsistasDet.Visible = false;
-                        lblSemBolsistas.Visible = true;
-                    }
-
-                    var despesas = repositorio.listarDespesas(idProjeto);
-                    if (despesas.Count > 0)
-                    {
-                        rptDespesas.DataSource = despesas;
-                        rptDespesas.DataBind();
-                        rptDespesas.Visible = true;
-                        lblSemDespesas.Visible = false;
-                    }
-                    else
-                    {
-                        rptDespesas.Visible = false;
-                        lblSemDespesas.Visible = true;
-                    }
-
-                }
-
-
+                AtualizarPainel(idProjeto);
                 pnlDetalhes.Visible = true;
             }
+        }
+
+        private void AtualizarPainel(int idProjeto)
+        {
+            var projeto = repositorio.BuscarProjetoId(idProjeto);
+            if (projeto != null)
+            {
+
+                ddlAdicionarAlunos.DataSource = repositorio.ListarBolsistasDisponiveis();
+                ddlAdicionarAlunos.DataTextField = "Nome";
+                ddlAdicionarAlunos.DataValueField = "ID";
+                ddlAdicionarAlunos.DataBind();
+
+                // Preenche campos básicos
+                litTituloDet.Text = projeto.Titulo;
+                lblCoordDet.Text = projeto.Responsavel?.Nome ?? "Não definido";
+                lblTitDet.Text = projeto.Responsavel?.Titulacao;
+                lblVerbaDet.Text = projeto.VerbaAprovada.ToString("C");
+                lblBolsaDet.Text = projeto.ValorBolsaIndividual.ToString("C"); // Novo campo
+                lblAreaDet.Text = projeto.AreaConhecimento;
+
+                var alunos = repositorio.listarBolsistasProjeto(idProjeto);
+
+
+                // Preenche o Repeater com a lista de bolsistas
+                if (alunos.Count > 0)
+                {
+                    rptBolsistasDet.DataSource = alunos;
+                    rptBolsistasDet.DataBind();
+                    rptBolsistasDet.Visible = true;
+                    lblSemBolsistas.Visible = false;
+                }
+                else
+                {
+                    rptBolsistasDet.Visible = false;
+                    lblSemBolsistas.Visible = true;
+                }
+
+                var despesas = repositorio.listarDespesas(idProjeto);
+                if (despesas.Count > 0)
+                {
+                    rptDespesas.DataSource = despesas;
+                    rptDespesas.DataBind();
+                    rptDespesas.Visible = true;
+                    lblSemDespesas.Visible = false;
+                }
+                else
+                {
+                    rptDespesas.Visible = false;
+                    lblSemDespesas.Visible = true;
+                }
+
+            }
+
+            ViewState["ProjetoAberto"] = idProjeto;
         }
 
         // Botão para esconder o painel novamente
@@ -163,5 +174,31 @@ namespace WebApplication1
         {
             pnlDetalhes.Visible = false;
         }
+
+        protected void btnAdicionarBolsista_Click(object sender, EventArgs e) {
+            var idProjeto = (int)ViewState["ProjetoAberto"];
+            var idAluno = int.Parse(ddlAdicionarAlunos.SelectedValue);
+
+            repositorio.CadastrarAlunosVinculados(idAluno, idProjeto);
+            AtualizarPainel(idProjeto);
+            CarregarDadosIniciais();
+        }
+
+        protected void btnRemoverBolsista_Click(object sender, CommandEventArgs e) {
+            var idBolsista = int.Parse(e.CommandArgument.ToString());
+            var idProjeto = (int)ViewState["ProjetoAberto"];
+
+            repositorio.RemoverBolsista(idBolsista, idProjeto);
+            AtualizarPainel(idProjeto);
+            CarregarDadosIniciais();
+        }
+
+        //private void ObterDespesas()
+        //{
+        //    var idProjeto = (int)ViewState["ProjetoAberto"];
+        //    var valor = repositorio.ObterDespesas(idProjeto);
+
+            
+        //}
     }
 }

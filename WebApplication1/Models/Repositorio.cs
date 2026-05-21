@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Web;
+using System.Web.Services.Protocols;
 
 namespace WebApplication1.Models
 {
@@ -147,6 +150,31 @@ namespace WebApplication1.Models
             return bolsistas;
         }
 
+        public List<Bolsista> ListarBolsistasDisponiveis()
+        {
+            List<Bolsista> bolsistas = new List<Bolsista>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Id, Nome FROM Bolsista WHERE NOT EXISTS (SELECT 1 FROM ProjetoBolsista WHERE ProjetoBolsista.bolsistaID = Bolsista.ID)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Bolsista b = new Bolsista();
+                    b.ID = Convert.ToInt32(reader["ID"]);
+                    b.Nome = reader["Nome"].ToString();
+                    
+
+                    bolsistas.Add(b);
+                }
+
+            }
+            return bolsistas;
+        }
+
         public void CadastrarBolsista(Bolsista bolsista)
         {
             using (SqlConnection connection = new SqlConnection(bdConnection))
@@ -223,14 +251,14 @@ namespace WebApplication1.Models
 
         }
 
-        //AQUI PRECISA FAZER JOIN COM TABELA DE COORDENADOR PARA PEGAR O NM DO COORDENADOR.
+        
         public List<Projeto> ListarProjetos()
         {
             List<Projeto> projetos = new List<Projeto>();
 
             using (SqlConnection connection = new SqlConnection(bdConnection))
             {
-                string sql = "SELECT ID, Titulo, AreaConhecimento, VerbaAprovada, ValorBolsaIndividual FROM Projeto";
+                string sql = "SELECT p.ID, p.Titulo, p.AreaConhecimento, p.VerbaAprovada, p.ValorBolsaIndividual, c.Nome FROM Projeto p INNER JOIN Coordenador c ON p.CoordenadorID = c.ID";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -243,6 +271,8 @@ namespace WebApplication1.Models
                     p.AreaConhecimento = reader["AreaConhecimento"].ToString();
                     p.VerbaAprovada = Convert.ToDecimal(reader["VerbaAprovada"]);
                     p.ValorBolsaIndividual = Convert.ToDecimal(reader["ValorBolsaIndividual"]);
+
+                    p.Responsavel = new Coordenador { Nome = reader["Nome"].ToString() };
 
                     projetos.Add(p);
                 }
@@ -340,7 +370,7 @@ namespace WebApplication1.Models
 
             using (SqlConnection connection = new SqlConnection(bdConnection))
             {
-                string sql = "SELECT B.Nome, B.CPF, B.Sexo FROM Bolsista B INNER JOIN ProjetoBolsista PB ON B.ID = PB.BolsistaID WHERE PB.ProjetoID = @pID";
+                string sql = "SELECT B.ID, B.Nome, B.CPF, B.Sexo FROM Bolsista B INNER JOIN ProjetoBolsista PB ON B.ID = PB.BolsistaID WHERE PB.ProjetoID = @pID";
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
                 cmd.Parameters.AddWithValue("@pID", pID);
@@ -352,6 +382,7 @@ namespace WebApplication1.Models
                 {
                     bolsistas.Add(new Bolsista
                     {
+                        ID = Convert.ToInt32(reader["ID"]),
                         Nome = reader["Nome"].ToString(),
                         CPF = reader["CPF"].ToString(),
                         Sexo = reader["Sexo"].ToString()
@@ -389,6 +420,41 @@ namespace WebApplication1.Models
             }
             return despesas;
         }
+
+        public void RemoverBolsista(int idBolsista, int idProjeto)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "DELETE FROM ProjetoBolsista WHERE ProjetoID = @idProjeto AND BolsistaID = @idBolsista";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@idBolsista", idBolsista);
+                cmd.Parameters.AddWithValue("@idProjeto", idProjeto);
+
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+               
+
+            }
+        }
+
+        //public decimal ObterDespesas(int id_projeto)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(bdConnection))
+        //    {
+        //        string sql = "SELECET SUM(Valor) AS Soma FROM Despesas WHERE ProjetoID = @id_projeto";
+        //        SqlCommand cmd = new SqlCommand(sql, connection);
+
+        //        cmd.Parameters.AddWithValue("@id_projeto", id_projeto);
+        //        var valor = 
+                
+
+        //        connection.Open();
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}  
 
     }
 }

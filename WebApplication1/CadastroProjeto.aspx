@@ -60,6 +60,7 @@
                     </asp:TemplateField>
 
                     <asp:BoundField DataField="VerbaAprovada" HeaderText="Verba Total" DataFormatString="{0:C}" />
+                    <asp:BoundField DataField="Saldo" HeaderText="Saldo" DataFormatString="{0:C}" />
 
                     <asp:TemplateField HeaderText="Ações">
                         <ItemTemplate>
@@ -121,6 +122,7 @@
                                         <th>Nome do Aluno</th>
                                         <th>CPF</th>
                                         <th>Sexo</th>
+                                        <th>Excluir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -130,6 +132,7 @@
                                                 <td class="font-weight-bold">👤 <%# Eval("Nome") %></td>
                                                 <td><%# Eval("CPF") %></td>
                                                 <td><span class="badge badge-secondary"><%# Eval("Sexo") %></span></td>
+                                                <td><asp:Button ID="btnRemoverBolsistaProjeto" CommandArgument='<%# Eval("ID") %>' runat="server" Text="Remover Bolsista" CssClass="btn btn-danger" OnCommand="btnRemoverBolsista_Click"/> </td>
                                             </tr>
                                         </ItemTemplate>
                                     </asp:Repeater>
@@ -138,7 +141,8 @@
                         </div>
                         <asp:Label ID="lblSemBolsistas" runat="server" Text="Nenhum aluno vinculado a este projeto."
                             CssClass="text-warning italic" Visible="false"></asp:Label>
-
+                        <asp:DropDownList ID="ddlAdicionarAlunos" runat="server" CssClass="form-control"></asp:DropDownList>
+                        <asp:Button ID="btnAdicionarBolsista" runat="server" CssClass="btn btn-primary" Text="Adicionar Bolsista" OnClick="btnAdicionarBolsista_Click"/>
 
                         <h6 class="text-muted text-uppercase small font-weight-bold mb-3">Despesas Vinculadas</h6>
                         <div class="table-responsive">
