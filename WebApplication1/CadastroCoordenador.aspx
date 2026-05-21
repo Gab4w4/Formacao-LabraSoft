@@ -6,7 +6,7 @@
             <div class="card-header bg-dark text-white text-center">
                 <h2 class="mb-0">👨‍🏫 Cadastro de Coordenador</h2>
             </div>
-            
+
             <div class="card-body p-4">
                 <div class="form-group mb-3">
                     <label class="form-label font-weight-bold">Nome Completo:</label>
@@ -41,24 +41,41 @@
                 </div>
 
                 <div class="d-grid gap-2">
-                    <asp:Button ID="btnSalvar" runat="server" Text="Cadastrar Coordenador" 
+                    <asp:Button ID="btnSalvar" runat="server" Text="Cadastrar Coordenador"
                         CssClass="btn btn-dark btn-lg w-100" OnClick="btnSalvar_Click" />
                 </div>
-                
+
                 <asp:Panel ID="plCoordenadores" CssClass="input-group mb-3 mt-3" runat="server">
                     <asp:TextBox ID="txtFiltroNomeTitulacao" runat="server" CssClass="form-control" placeholder="Busque pelo nome ou a titulação"></asp:TextBox>
                     <br />
                     <asp:Button ID="btnFiltroNomeTitulacao" CssClass="btn btn-primary" runat="server" OnClick="btnBuscarNomeTitulacao_Click" Text="Buscar" />
-                </asp:Panel> 
+                </asp:Panel>
 
+                <asp:Panel ID="plExcluirCoordenador" CssClass="input-group mb-3 mt-3" runat="server">
+                    <asp:DropDownList ID="ddlExcluirCoordenador" runat="server" CssClass="form-control"></asp:DropDownList>
+                    <br />
+                    <asp:Button ID="btnEditarEmail" CssClass="btn btn-primary" runat="server" Text="Editar" OnClick="btnHabilitarEditorEmail_Click"/>
+
+                    <asp:Button ID="btnExcluirCoordernador" CssClass="btn btn-danger" runat="server" OnClick="btnExcluirCoordenador_Click" Text="Excluir" />
+                    
+                </asp:Panel>
+                <asp:Panel ID="plEditarEmail" CssClass="input-group mb-3 mt-3" runat="server" Visible="false">
+                    <asp:TextBox ID="txtEditarEmailCoord" runat="server" CssClass="form-control"  placeholder="Digite o novo email"></asp:TextBox>
+                    
+                    <asp:Button ID="btnSalvarNovoEmail" runat="server" CssClass="btn btn-primary" Text="Salvar" OnClick="btnEditarEmail_Click"/>
+                    <asp:Button ID="btnCancelar" runat="server" CssClass="btn btn-danger" Text="Cancelar" OnClick="btnCancelar_Click"/>
+                </asp:Panel>
+                
+                
                 <hr />
 
                 <div class="mt-4">
-                    <h4 class="text-secondary">Lista de Coordenadores</h4>                    
-                    <asp:GridView ID="gridCoordenadores" runat="server" 
-                        CssClass="table table-hover table-bordered mt-2" 
+                    <h4 class="text-secondary">Lista de Coordenadores</h4>
+                    <asp:GridView ID="gridCoordenadores" runat="server"
+                        CssClass="table table-hover table-bordered mt-2"
                         AutoGenerateColumns="true" DataKeyNames="ID">
-                        <HeaderStyle CssClass="table-dark" />
+                        <HeaderStyle CssClass="table-dark" />        
+
                     </asp:GridView>
                     <asp:Label ID="lblAviso" runat="server" Text="Nenhum coordenador cadastrado." CssClass="text-muted small italic"></asp:Label>
                 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI.WebControls;
 using WebApplication1.Models;
 
 namespace WebApplication1
@@ -13,12 +14,24 @@ namespace WebApplication1
         {
             if (!IsPostBack)
             {
+                
+                CarregarCoordernadores();
                 AtualizarGrid();
             }
         }
 
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtNome.Text) ||
+            string.IsNullOrWhiteSpace(txtCPF.Text) ||
+            string.IsNullOrWhiteSpace(txtArea.Text) ||
+            string.IsNullOrWhiteSpace(txtEmail.Text) ||
+            ddlTitulacao.SelectedIndex <= 0)
+            {
+                lblMensagem.Text = "⚠️ Por favor, preencha todos os campos corretamente antes de salvar.";
+                lblMensagem.CssClass = "alert alert-warning d-block";
+                return;
+            }
             try
             {
                 Coordenador novo = new Coordenador();
@@ -36,12 +49,23 @@ namespace WebApplication1
                 lblMensagem.CssClass = "text-success";
 
                 AtualizarGrid();
+                CarregarCoordernadores();
             }
             catch (Exception)
             {
                 lblMensagem.Text = "Erro ao salvar coordenador.";
                 lblMensagem.CssClass = "text-danger";
             }
+        }
+
+        private void CarregarCoordernadores()
+        {
+            
+            ddlExcluirCoordenador.DataSource = repositorio.ListarCoordernadores();
+            ddlExcluirCoordenador.DataTextField = "Nome";
+            ddlExcluirCoordenador.DataValueField = "ID";
+            ddlExcluirCoordenador.DataBind();
+            ddlExcluirCoordenador.Items.Insert(0, new ListItem("Selecione um Coordenador...", ""));
         }
 
         private void AtualizarGrid()
@@ -79,5 +103,35 @@ namespace WebApplication1
             gridCoordenadores.DataSource = listaCoordenadores;
             gridCoordenadores.DataBind();
         }
+
+        protected void btnExcluirCoordenador_Click(object sender, EventArgs e)
+        {
+            var idCoordenador = int.Parse(ddlExcluirCoordenador.SelectedValue);
+            repositorio.ExcluirCoordenador(idCoordenador);
+            AtualizarGrid();
+            CarregarCoordernadores();
+        }
+
+        protected void btnHabilitarEditorEmail_Click(Object sender, EventArgs e)
+        {
+            plEditarEmail.Visible = true;
+
+        }
+
+        protected void btnCancelar_Click (object sender, EventArgs e)
+        {
+            plEditarEmail.Visible = false;
+        }
+
+        protected void btnEditarEmail_Click(Object sender, EventArgs e)
+        {
+            var idCoordenador = int.Parse(ddlExcluirCoordenador.SelectedValue);
+            var emailNovo = txtEditarEmailCoord.Text;
+            repositorio.EditarEmailCord(idCoordenador, emailNovo);
+            plEditarEmail.Visible = false;
+            AtualizarGrid();
+        }
+
+        
     }
 }

@@ -95,6 +95,30 @@ namespace WebApplication1.Models
 
         }
 
+        public void ExcluirCoordenador(int idCoordenador)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "DELETE FROM Coordenador WHERE ID = @idCoordenador";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@idCoordenador", idCoordenador);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void EditarEmailCord(int idCoordenador, String emailNovo)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "UPDATE Coordenador SET email = @emailNovo WHERE ID = @idCoordenador";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@emailNovo", emailNovo);
+                cmd.Parameters.AddWithValue("@idCoordenador", idCoordenador);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
         public List<Bolsista> ListarBolsistas()
         {
             List<Bolsista> bolsistas = new List<Bolsista>();
@@ -199,6 +223,7 @@ namespace WebApplication1.Models
 
         }
 
+        //AQUI PRECISA FAZER JOIN COM TABELA DE COORDENADOR PARA PEGAR O NM DO COORDENADOR.
         public List<Projeto> ListarProjetos()
         {
             List<Projeto> projetos = new List<Projeto>();
