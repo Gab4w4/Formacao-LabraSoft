@@ -51,30 +51,105 @@
                     <asp:Button ID="btnFiltroNomeTitulacao" CssClass="btn btn-primary" runat="server" OnClick="btnBuscarNomeTitulacao_Click" Text="Buscar" />
                 </asp:Panel>
 
-                <asp:Panel ID="plExcluirCoordenador" CssClass="input-group mb-3 mt-3" runat="server">
-                    <asp:DropDownList ID="ddlExcluirCoordenador" runat="server" CssClass="form-control"></asp:DropDownList>
-                    <br />
-                    <asp:Button ID="btnEditarEmail" CssClass="btn btn-primary" runat="server" Text="Editar" OnClick="btnHabilitarEditorEmail_Click"/>
+                
+                <asp:Panel ID="plEditarEmail" runat="server" Visible="false">
 
-                    <asp:Button ID="btnExcluirCoordernador" CssClass="btn btn-danger" runat="server" OnClick="btnExcluirCoordenador_Click" Text="Excluir" />
-                    
+                    <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content shadow-lg">
+
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">✏️ Editar E-mail do Coordenador</h5>
+
+                                    <asp:Button ID="btnCancelar"
+                                        runat="server"
+                                        Text="X"
+                                        CssClass="btn btn-light btn-sm"
+                                        OnClick="btnCancelar_Click" />
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <label class="font-weight-bold">Novo E-mail:</label>
+
+                                    <asp:TextBox ID="txtEditarEmailCoord"
+                                        runat="server"
+                                        CssClass="form-control"
+                                        placeholder="Digite o novo e-mail">
+                                    </asp:TextBox>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <asp:Button ID="btnSalvarNovoEmail"
+                                        runat="server"
+                                        CssClass="btn btn-success"
+                                        Text="💾 Salvar"
+                                        OnClick="btnEditarEmail_Click" />
+
+                                    <asp:Button ID="btnFecharModal"
+                                        runat="server"
+                                        CssClass="btn btn-secondary"
+                                        Text="Cancelar"
+                                        OnClick="btnCancelar_Click" />
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </asp:Panel>
-                <asp:Panel ID="plEditarEmail" CssClass="input-group mb-3 mt-3" runat="server" Visible="false">
-                    <asp:TextBox ID="txtEditarEmailCoord" runat="server" CssClass="form-control"  placeholder="Digite o novo email"></asp:TextBox>
-                    
-                    <asp:Button ID="btnSalvarNovoEmail" runat="server" CssClass="btn btn-primary" Text="Salvar" OnClick="btnEditarEmail_Click"/>
-                    <asp:Button ID="btnCancelar" runat="server" CssClass="btn btn-danger" Text="Cancelar" OnClick="btnCancelar_Click"/>
-                </asp:Panel>
-                
-                
+
+
                 <hr />
 
                 <div class="mt-4">
                     <h4 class="text-secondary">Lista de Coordenadores</h4>
                     <asp:GridView ID="gridCoordenadores" runat="server"
-                        CssClass="table table-hover table-bordered mt-2"
-                        AutoGenerateColumns="true" DataKeyNames="ID">
-                        <HeaderStyle CssClass="table-dark" />        
+                        CssClass="table table-hover table-bordered shadow-sm mt-3"
+                        AutoGenerateColumns="false"
+                        DataKeyNames="ID"
+                        OnRowCommand="gridCoordenadores_RowCommand">
+
+                        <Columns>
+
+                            <asp:BoundField DataField="ID" HeaderText="ID" />
+
+                            <asp:BoundField DataField="Nome" HeaderText="Nome" />
+
+                            <asp:BoundField DataField="CPF" HeaderText="CPF" />
+
+                            <asp:BoundField DataField="Titulacao" HeaderText="Titulação" />
+
+                            <asp:BoundField DataField="AreaAtuacao" HeaderText="Área de Atuação" />
+
+                            <asp:BoundField DataField="Email" HeaderText="E-mail" />
+
+                            <asp:TemplateField HeaderText="Ações">
+                                <ItemTemplate>
+
+                                    <asp:Button ID="btnEditarEmailGrid"
+                                        runat="server"
+                                        Text="✏️ Editar Email"
+                                        CssClass="btn btn-primary btn-sm mr-2"
+                                        CommandName="EditarEmail"
+                                        CommandArgument='<%# Eval("ID") %>' />
+
+                                    <asp:Button ID="btnExcluirGrid"
+                                        runat="server"
+                                        Text="🗑 Excluir Coordenador"
+                                        CssClass="btn btn-danger btn-sm"
+                                        CommandName="ExcluirCoordenador"
+                                        CommandArgument='<%# Eval("ID") %>' />
+
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                        </Columns>
+
+                        <HeaderStyle CssClass="table-dark" />
 
                     </asp:GridView>
                     <asp:Label ID="lblAviso" runat="server" Text="Nenhum coordenador cadastrado." CssClass="text-muted small italic"></asp:Label>

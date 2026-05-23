@@ -110,7 +110,7 @@ namespace WebApplication1
             }
             else
             {
-                plButtonFiltro.Visible=false;
+                pnlFiltros.Visible=false;
                 lblAvisoGrid.Visible = true;
                 gridBolsistas.Visible = false;
 

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastroBolsista.aspx.cs" Inherits="WebApplication1.CadastroBolsista" %>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container mt-5">
 
@@ -6,7 +7,7 @@
             <div class="card-header bg-primary text-white text-center">
                 <h2 class="mb-0">📝 Cadastro de Bolsista</h2>
             </div>
-            
+
             <div class="card-body p-4">
                 <p class="text-muted text-center small">Preencha os campos abaixo para processar o cadastro.</p>
                 <hr />
@@ -45,39 +46,62 @@
 
 
                 <div class="d-grid gap-2">
-                    <asp:Button ID="btnSalvar" runat="server" Text="Salvar e Processar Cadastro" 
+                    <asp:Button ID="btnSalvar" runat="server" Text="Salvar e Processar Cadastro"
                         CssClass="btn btn-success btn-lg w-100" OnClick="btnSalvar_Click" />
-                    <asp:Button ID="btnLimpar" runat="server" Text="Limpar Campos" 
+                    <asp:Button ID="btnLimpar" runat="server" Text="Limpar Campos"
                         CssClass="mt-2 btn btn-outline-secondary btn-lg btn-block" OnClick="btnLimpar_Click" />
 
                 </div>
-                <hr />                
-                
+                <hr />
+
                 <div class="mt-5">
                     <h3 class="text-secondary">📋 Lista de Bolsistas Cadastrados</h3>
                     <asp:Panel ID="pnlFiltros" runat="server" Visible="false">
-                        <div class="mt-4 mb-2 d-flex justify-content-between align-items-center">                        
+                        <div class="mt-4 mb-2 d-flex justify-content-between align-items-center">
                             <div>
-                                <asp:Button ID="btnFiltrarMulheres" runat="server" Text="👩 Filtrar Mulheres" 
+                                <asp:Button ID="btnFiltrarMulheres" runat="server" Text="👩 Filtrar Mulheres"
                                     CssClass="btn btn-outline-info btn-sm" OnClick="btnFiltrarMulheres_Click" />
-            
-                                <asp:Button ID="btnOrdemAlfabetica" runat="server" Text="AZ Ordem Alfabética" 
+
+                                <asp:Button ID="btnOrdemAlfabetica" runat="server" Text="AZ Ordem Alfabética"
                                     CssClass="btn btn-outline-dark btn-sm" OnClick="btnOrdemAlfabetica_Click" />
-                
-                                <asp:Button ID="btnVerTodos" runat="server" Text="Mostrar Todos" 
-                                    CssClass="btn btn-link btn-sm text-muted" OnClick="btnVerTodos_Click" />                               
+
+                                <asp:Button ID="btnVerTodos" runat="server" Text="Mostrar Todos"
+                                    CssClass="btn btn-link btn-sm text-muted" OnClick="btnVerTodos_Click" />
                             </div>
                         </div>
                     </asp:Panel>
-    
-                    <asp:GridView ID="gridBolsistas" runat="server" 
-                        CssClass="table table-hover table-striped border" 
-                        AutoGenerateColumns="true" 
-                        GridLines="None" DataKeyNames="ID">
-                        <HeaderStyle CssClass="thead-dark" />
+
+                    <asp:GridView ID="gridBolsistas" runat="server"
+                        CssClass="table table-hover table-bordered shadow-sm mt-3"
+                        AutoGenerateColumns="false"
+                        GridLines="None">
+
+                        <Columns>
+
+                            <asp:BoundField DataField="Nome" HeaderText="Nome Completo" />
+
+                            <asp:BoundField DataField="Matricula" HeaderText="Matrícula" />
+
+                            <asp:BoundField DataField="CPF" HeaderText="CPF" />
+
+                            <asp:TemplateField HeaderText="Sexo">
+                                <ItemTemplate>
+                                    <%# Eval("Sexo").ToString() == "M" ? "👨 Masculino" : Eval("Sexo").ToString() == "F" ? "👩 Feminino" : "⚪ Outro" %>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                            <asp:BoundField
+                                DataField="DataNascimento"
+                                HeaderText="Data de Nascimento"
+                                DataFormatString="{0:dd/MM/yyyy}" />
+
+                        </Columns>
+
+                        <HeaderStyle CssClass="table-dark" />
+
                     </asp:GridView>
 
-                    <asp:Label ID="lblAvisoGrid" runat="server" Text="Nenhum bolsista na memória." 
+                    <asp:Label ID="lblAvisoGrid" runat="server" Text="Nenhum bolsista na memória."
                         CssClass=" text-muted italic" Visible="false"></asp:Label>
                 </div>
 

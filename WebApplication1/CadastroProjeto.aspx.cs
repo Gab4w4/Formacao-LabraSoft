@@ -130,8 +130,10 @@ namespace WebApplication1
                 lblCoordDet.Text = projeto.Responsavel?.Nome ?? "Não definido";
                 lblTitDet.Text = projeto.Responsavel?.Titulacao;
                 lblVerbaDet.Text = projeto.VerbaAprovada.ToString("C");
-                lblBolsaDet.Text = projeto.ValorBolsaIndividual.ToString("C"); // Novo campo
+                lblBolsaDet.Text = projeto.ValorBolsaIndividual.ToString("C");
+                lblValorDespesas.Text = projeto.Saldo.ToString("C");
                 lblAreaDet.Text = projeto.AreaConhecimento;
+
 
                 var alunos = repositorio.listarBolsistasProjeto(idProjeto);
 
@@ -149,6 +151,8 @@ namespace WebApplication1
                     rptBolsistasDet.Visible = false;
                     lblSemBolsistas.Visible = true;
                 }
+
+                
 
                 var despesas = repositorio.listarDespesas(idProjeto);
                 if (despesas.Count > 0)
@@ -193,12 +197,6 @@ namespace WebApplication1
             CarregarDadosIniciais();
         }
 
-        //private void ObterDespesas()
-        //{
-        //    var idProjeto = (int)ViewState["ProjetoAberto"];
-        //    var valor = repositorio.ObterDespesas(idProjeto);
-
-            
-        //}
+        
     }
 }

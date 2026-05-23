@@ -12,6 +12,7 @@ namespace WebApplication1.Models
         public DateTime DataDespesa { get; set; }
         public string Categoria { get; set; }
         public int ProjetoID { get; set; }
+       
         
     }
 }

@@ -18,7 +18,8 @@ namespace WebApplication1.Models
        
         public Coordenador Responsavel { get; set; } 
         public List<Bolsista> AlunosVinculados { get; set; } 
-        public List<Despesa> Despesas { get; set; } 
+        public List<Despesa> Despesas { get; set; }
+        
 
         public int CoordenadorID { get; set; }
 

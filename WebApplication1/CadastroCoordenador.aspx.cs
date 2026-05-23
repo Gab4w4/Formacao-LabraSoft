@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebApplication1.Models;
 
@@ -15,7 +16,7 @@ namespace WebApplication1
             if (!IsPostBack)
             {
                 
-                CarregarCoordernadores();
+                
                 AtualizarGrid();
             }
         }
@@ -49,7 +50,7 @@ namespace WebApplication1
                 lblMensagem.CssClass = "text-success";
 
                 AtualizarGrid();
-                CarregarCoordernadores();
+                
             }
             catch (Exception)
             {
@@ -58,15 +59,7 @@ namespace WebApplication1
             }
         }
 
-        private void CarregarCoordernadores()
-        {
-            
-            ddlExcluirCoordenador.DataSource = repositorio.ListarCoordernadores();
-            ddlExcluirCoordenador.DataTextField = "Nome";
-            ddlExcluirCoordenador.DataValueField = "ID";
-            ddlExcluirCoordenador.DataBind();
-            ddlExcluirCoordenador.Items.Insert(0, new ListItem("Selecione um Coordenador...", ""));
-        }
+        
 
         private void AtualizarGrid()
         {
@@ -80,6 +73,48 @@ namespace WebApplication1
             else
             {
                 lblAviso.Visible = true;
+            }
+        }
+
+        protected void gridCoordenadores_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int idCoordenador = Convert.ToInt32(e.CommandArgument);
+
+            if (e.CommandName == "ExcluirCoordenador")
+            {
+                try
+                {
+                    repositorio.ExcluirCoordenador(idCoordenador);
+
+                    AtualizarGrid();
+
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        this.GetType(),
+                        "sucesso",
+                        "alert('Coordenador excluído com sucesso!');",
+                        true
+                    );
+                }
+                catch (Exception)
+                {
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        this.GetType(),
+                        "erro",
+                        "alert('Não é possível excluir este coordenador, pois ele está vinculado a um projeto atualmente.');",
+                        true
+                    );
+                }
+            }
+
+            if (e.CommandName == "EditarEmail")
+            {
+                ViewState["IdCoordenadorEditar"] = idCoordenador;
+
+                txtEditarEmailCoord.Text = "";
+
+                plEditarEmail.Visible = true;
             }
         }
 
@@ -104,19 +139,7 @@ namespace WebApplication1
             gridCoordenadores.DataBind();
         }
 
-        protected void btnExcluirCoordenador_Click(object sender, EventArgs e)
-        {
-            var idCoordenador = int.Parse(ddlExcluirCoordenador.SelectedValue);
-            repositorio.ExcluirCoordenador(idCoordenador);
-            AtualizarGrid();
-            CarregarCoordernadores();
-        }
-
-        protected void btnHabilitarEditorEmail_Click(Object sender, EventArgs e)
-        {
-            plEditarEmail.Visible = true;
-
-        }
+        
 
         protected void btnCancelar_Click (object sender, EventArgs e)
         {
@@ -125,13 +148,17 @@ namespace WebApplication1
 
         protected void btnEditarEmail_Click(Object sender, EventArgs e)
         {
-            var idCoordenador = int.Parse(ddlExcluirCoordenador.SelectedValue);
+            var idCoordenador = (int)ViewState["IdCoordenadorEditar"];
+
             var emailNovo = txtEditarEmailCoord.Text;
+
             repositorio.EditarEmailCord(idCoordenador, emailNovo);
+
             plEditarEmail.Visible = false;
+
             AtualizarGrid();
         }
 
-        
+
     }
 }

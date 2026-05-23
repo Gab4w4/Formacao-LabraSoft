@@ -102,6 +102,10 @@
                                     <strong>Bolsa Aluno:</strong>
                                     <asp:Label ID="lblBolsaDet" runat="server" />
                                 </p>
+                                <p>
+                                    <strong>Valor das Despesas:</strong>
+                                    <asp:Label ID="lblValorDespesas" runat="server" />
+                                </p>
                             </div>
                             <div class="col-md-4">
                                 <h6 class="text-muted text-uppercase small font-weight-bold">Localização</h6>
@@ -143,7 +147,7 @@
                             CssClass="text-warning italic" Visible="false"></asp:Label>
                         <asp:DropDownList ID="ddlAdicionarAlunos" runat="server" CssClass="form-control"></asp:DropDownList>
                         <asp:Button ID="btnAdicionarBolsista" runat="server" CssClass="btn btn-primary" Text="Adicionar Bolsista" OnClick="btnAdicionarBolsista_Click"/>
-
+                        <br />
                         <h6 class="text-muted text-uppercase small font-weight-bold mb-3">Despesas Vinculadas</h6>
                         <div class="table-responsive">
                             <table class="table table-sm table-hover">

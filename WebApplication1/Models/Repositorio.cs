@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Messaging;
@@ -258,7 +259,7 @@ namespace WebApplication1.Models
 
             using (SqlConnection connection = new SqlConnection(bdConnection))
             {
-                string sql = "SELECT p.ID, p.Titulo, p.AreaConhecimento, p.VerbaAprovada, p.ValorBolsaIndividual, c.Nome FROM Projeto p INNER JOIN Coordenador c ON p.CoordenadorID = c.ID";
+                string sql = "SELECT p.ID, p.Titulo, p.AreaConhecimento, p.VerbaAprovada, p.ValorBolsaIndividual, c.Nome AS Coordenador, SUM(d.Valor) AS Saldo FROM Projeto p INNER JOIN Coordenador c ON p.CoordenadorID = c.ID INNER JOIN Despesa d ON p.ID = d.ProjetoID GROUP BY p.ID, p.Titulo, p.AreaConhecimento, p.VerbaAprovada, p.ValorBolsaIndividual, c.Nome;";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -272,7 +273,8 @@ namespace WebApplication1.Models
                     p.VerbaAprovada = Convert.ToDecimal(reader["VerbaAprovada"]);
                     p.ValorBolsaIndividual = Convert.ToDecimal(reader["ValorBolsaIndividual"]);
 
-                    p.Responsavel = new Coordenador { Nome = reader["Nome"].ToString() };
+                    p.Responsavel = new Coordenador { Nome = reader["Coordenador"].ToString() };
+                    p.Saldo = Convert.ToDecimal(reader["Saldo"]);
 
                     projetos.Add(p);
                 }
@@ -337,7 +339,7 @@ namespace WebApplication1.Models
         {
             using (SqlConnection connection = new SqlConnection(bdConnection))
             {
-                string sql = "SELECT P.*, C.Nome, C.Titulacao FROM Projeto P INNER JOIN Coordenador C ON P.CoordenadorID = C.ID WHERE P.ID = @ID";
+                string sql = "SELECT P.*, C.Nome, C.Titulacao, ISNULL(SUM(D.Valor), 0) AS Saldo FROM Projeto P INNER JOIN Coordenador C ON P.CoordenadorID = C.ID LEFT JOIN Despesa D ON P.ID = D.ProjetoID WHERE P.ID = @ID GROUP BY P.ID, P.Titulo, P.AreaConhecimento, P.VerbaAprovada, P.ValorBolsaIndividual, P.CoordenadorID, C.Nome, C.Titulacao";
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
                 cmd.Parameters.AddWithValue("@ID", id);
@@ -353,6 +355,7 @@ namespace WebApplication1.Models
                         AreaConhecimento = reader["AreaConhecimento"].ToString(),
                         VerbaAprovada = Convert.ToDecimal(reader["VerbaAprovada"]),
                         ValorBolsaIndividual = Convert.ToDecimal(reader["ValorBolsaIndividual"]),
+                        Saldo = Convert.ToDecimal(reader["Saldo"]),
                         Responsavel = new Coordenador
                         {
                             Nome = reader["Nome"].ToString(),
@@ -414,12 +417,15 @@ namespace WebApplication1.Models
                         Valor = Convert.ToDecimal(reader["Valor"]),
                         DataDespesa = Convert.ToDateTime(reader["DataDespesa"]),
                         Categoria = reader["Categoria"].ToString()
+                        
                     });
                 }
 
             }
             return despesas;
         }
+
+       
 
         public void RemoverBolsista(int idBolsista, int idProjeto)
         {
@@ -440,21 +446,22 @@ namespace WebApplication1.Models
             }
         }
 
-        //public decimal ObterDespesas(int id_projeto)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(bdConnection))
-        //    {
-        //        string sql = "SELECET SUM(Valor) AS Soma FROM Despesas WHERE ProjetoID = @id_projeto";
-        //        SqlCommand cmd = new SqlCommand(sql, connection);
+        public void ObterDespesas(int id_projeto)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT SUM(Valor) AS Soma FROM Despesa WHERE ProjetoID = @id_projeto";
+                SqlCommand cmd = new SqlCommand(sql, connection);
 
-        //        cmd.Parameters.AddWithValue("@id_projeto", id_projeto);
-        //        var valor = 
+                cmd.Parameters.AddWithValue("@id_projeto", id_projeto);
                 
 
-        //        connection.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //}  
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+            
+        }
 
     }
 }
