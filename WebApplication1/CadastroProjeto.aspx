@@ -1,134 +1,183 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastroProjeto.aspx.cs" Inherits="WebApplication1.CadastroProjeto" %>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container mt-5">
-    <div class="card shadow-sm mx-auto w-100">
-        <div class="card-header bg-primary text-white text-center">
-            <h2 class="mb-0">📝 Cadastro de Projetos</h2>
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3>🚀 Novo Projeto de Extensão</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Título do Projeto:</label>
+                        <asp:TextBox ID="txtTitulo" runat="server" CssClass="form-control" placeholder="Ex: IA na Educação"></asp:TextBox>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Área de Conhecimento:</label>
+                        <asp:TextBox ID="txtAreaConhecimento" runat="server" CssClass="form-control" placeholder="Ex: Tecnologia, Saúde..."></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Verba Total Aprovada (R$):</label>
+                        <asp:TextBox ID="txtVerba" runat="server" CssClass="form-control" placeholder="0,00"></asp:TextBox>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold">Valor Mensal por Bolsista (R$):</label>
+                        <asp:TextBox ID="txtValorBolsa" runat="server" CssClass="form-control" placeholder="0,00"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Coordenador Responsável:</label>
+                    <asp:DropDownList ID="ddlCoordenador" runat="server" CssClass="form-control"></asp:DropDownList>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="font-weight-bold">Selecionar Bolsistas:</label>
+                    <asp:ListBox ID="lstAlunos" runat="server" SelectionMode="Multiple" CssClass="form-control" Rows="5"></asp:ListBox>
+                    <small class="text-muted text-italic">* Segure CTRL para selecionar vários.</small>
+                </div>
+
+                <asp:Button ID="btnSalvarProjeto" runat="server" Text="Finalizar e Criar Projeto"
+                    CssClass="btn btn-success btn-lg w-100" OnClick="btnSalvarProjeto_Click" />
+                <asp:Label ID="lblMensagem" runat="server" CssClass="font-weight-bold"></asp:Label>
+            </div>
         </div>
-        
-        <div class="card-body p-4">
-            <p class="text-muted text-center small">Preencha os campos abaixo para processar o cadastro.</p>
-            <hr />
 
-            <div class="form-group mb-3">
-                <label class="form-label font-weight-bold">Título:</label>
-                <asp:TextBox ID="txtTituloProjeto" runat="server" CssClass="form-control" ></asp:TextBox>
-            </div>
 
-            <div class="form-group mb-4">
-                <label class="form-label font-weight-bold">Área de Conhecimento:</label>
-                <asp:TextBox ID="txtAreaDeConhecimento" runat="server"  CssClass="form-control"></asp:TextBox>
-            </div>
+        <div class="mt-5">
+            <h4>Projetos em Andamento</h4>
+            <asp:GridView ID="gridProjetos" runat="server" CssClass="table table-hover table-bordered shadow-sm"
+                AutoGenerateColumns="false" DataKeyNames="Id" OnRowCommand="gridProjetos_RowCommand">
+                <Columns>
+                    <asp:BoundField DataField="Titulo" HeaderText="Projeto" />
+                    <asp:BoundField DataField="AreaConhecimento" HeaderText="Área" />
 
-            <div class="row">
-                <div class="col-md-6 form-group mb-3">
-                    <label class="form-label font-weight-bold">Verba Aprovada:</label>
-                    <asp:TextBox ID="txtVerbaAprovada" runat="server" CssClass="form-control"></asp:TextBox>
-                </div>
+                    <asp:TemplateField HeaderText="Responsável">
+                        <ItemTemplate><%# Eval("Responsavel.Nome") %></ItemTemplate>
+                    </asp:TemplateField>
 
-                <div class="col-md-6 form-group mb-3">
-                    <label class="form-label font-weight-bold">Valor da Bolsa Individual:</label>
-                    <asp:TextBox ID="txtBolsaIndividual" runat="server" CssClass="form-control"></asp:TextBox>
-                </div>
-            </div>
+                    <asp:BoundField DataField="VerbaAprovada" HeaderText="Verba Total" DataFormatString="{0:C}" />
+                    <asp:BoundField DataField="Saldo" HeaderText="Saldo" DataFormatString="{0:C}" />
 
-            <div>
-                <label class="form-label font-weight-bold">Coordenador: </label>
-                <asp:DropDownList ID="ddlListaCoordenadores" CssClass="form-control" runat="server"/>
-            </div>
-            <br />
-            <div>
-                <label class="form-label font-weight-bold">Bolsistas: </label>
-                <div style="height:150px; overflow-y:auto; border:1px solid #ccc; padding:5px;">
-                    <asp:CheckBoxList ID="cblListaBolsistas" runat="server" RepeatLayout="Table" RepeatColumns="8" CellPadding="6" CellSpacing="3" TextAlign="Right"/>
-
-                </div>
-            </div>
-
-            <div class="d-grid gap-2">
-                <asp:Button ID="btnsalvar" runat="server" text="Salvar e Processar Cadastro" 
-                    CssClass="btn btn-success btn-lg w-100" OnClick="btnSalvar_Click" />
-                <asp:Button ID="btnlimpar" runat="server" text="Limpar Campos" 
-                    CssClass="mt-2 btn btn-outline-secondary btn-lg btn-block" OnClick="btnLimpar_Click" />
-
-            </div>
-            <hr />
-            <div class="mt-5">
-                <h3 class="text-secondary">📋 Lista de Projetos Cadastrados</h3>
-         
-                <br />
-
-                <asp:GridView ID="gridProjetos" runat="server" 
-                    CssClass="table table-hover table-striped border" 
-                    AutoGenerateColumns="false"
-                    OnRowCommand="gridDetalhar_OnClick"
-                    >
-                    <Columns>
-                        <asp:BoundField DataField="Titulo" HeaderText="Título" />
-                        <asp:BoundField DataField="AreaDeConhecimento" HeaderText="AreaConhecimento" />
-                        <asp:BoundField DataField="VerbaAprovada" HeaderText="VerbaAprovada" />
-                        <asp:BoundField DataField="ValorDeBolsaIndividual" HeaderText="BolsaIndividual" />
-
-                       
-
-                        <asp:TemplateField HeaderText="Ações">
-                            <ItemTemplate>
-                                <asp:Button 
-                                    ID="btnDetalhes" 
-                                    runat="server" 
-                                    Text="Detalhes" 
-                                    CssClass="btn btn-info btn-sm"
-                                    CommandName="Detalhes"
-                                    CommandArgument='<%# Container.DataItemIndex %>' />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-
-                        
-                    </Columns>
-                    <HeaderStyle CssClass="thead-dark" />
-                </asp:GridView>
-
-                <asp:Panel ID="panelDetalhes" runat="server" Visible="false" CssClass="mt-4">
-    
-                    <div class="card border-info shadow-sm">
-        
-                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">📌 Dados do Projeto</h5>
-
-                            <asp:Button 
-                                ID="btnFecharDetalhes" 
-                                runat="server" 
-                                Text="✖" 
-                                CssClass="btn btn-light btn-sm"
-                                OnClick="btnFecharDetalhes_Click" />
+                    <asp:TemplateField HeaderText="Ações">
+                        <ItemTemplate>
+                            <asp:Button ID="btnVer" runat="server" Text="🔍 Detalhes"
+                                CssClass="btn btn-info btn-sm"
+                                CommandName="VerDetalhes"
+                                CommandArgument='<%# Container.DataItemIndex %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+            <div class="mt-4">
+                <asp:Panel ID="pnlDetalhes" runat="server" Visible="false" CssClass="card border-info shadow-lg animate__animated animate__fadeIn">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-search"></i>Detalhamento:
+                            <asp:Literal ID="litTituloDet" runat="server" /></h5>
+                        <asp:LinkButton ID="btnFechar" runat="server" OnClick="btnFechar_Click" CssClass="btn btn-sm btn-light text-info font-weight-bold">✖ Fechar</asp:LinkButton>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <h6 class="text-muted text-uppercase small font-weight-bold">Gestão</h6>
+                                <p class="mb-1">
+                                    <strong>Coordenador:</strong>
+                                    <asp:Label ID="lblCoordDet" runat="server" CssClass="text-primary" />
+                                </p>
+                                <p>
+                                    <strong>Titulação:</strong>
+                                    <asp:Label ID="lblTitDet" runat="server" />
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-muted text-uppercase small font-weight-bold">Finanças</h6>
+                                <p class="mb-1">
+                                    <strong>Verba Total:</strong>
+                                    <asp:Label ID="lblVerbaDet" runat="server" CssClass="text-success font-weight-bold" />
+                                </p>
+                                <p>
+                                    <strong>Bolsa Aluno:</strong>
+                                    <asp:Label ID="lblBolsaDet" runat="server" />
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-muted text-uppercase small font-weight-bold">Localização</h6>
+                                <p class="mb-1">
+                                    <strong>Área:</strong>
+                                    <asp:Label ID="lblAreaDet" runat="server" />
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="card-body">
-                            <asp:Literal ID="litDetalhes" runat="server"></asp:Literal>
+                        <hr />
+
+                        <h6 class="text-muted text-uppercase small font-weight-bold mb-3">🎓 Equipe de Bolsistas</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Nome do Aluno</th>
+                                        <th>CPF</th>
+                                        <th>Sexo</th>
+                                        <th>Excluir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <asp:Repeater ID="rptBolsistasDet" runat="server">
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td class="font-weight-bold">👤 <%# Eval("Nome") %></td>
+                                                <td><%# Eval("CPF") %></td>
+                                                <td><span class="badge badge-secondary"><%# Eval("Sexo") %></span></td>
+                                                <td><asp:Button ID="btnRemoverBolsistaProjeto" CommandArgument='<%# Eval("ID") %>' runat="server" Text="Remover Bolsista" CssClass="btn btn-danger" OnCommand="btnRemoverBolsista_Click"/> </td>
+                                            </tr>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                </tbody>
+                            </table>
                         </div>
+                        <asp:Label ID="lblSemBolsistas" runat="server" Text="Nenhum aluno vinculado a este projeto."
+                            CssClass="text-warning italic" Visible="false"></asp:Label>
+                        <asp:DropDownList ID="ddlAdicionarAlunos" runat="server" CssClass="form-control"></asp:DropDownList>
+                        <asp:Button ID="btnAdicionarBolsista" runat="server" CssClass="btn btn-primary" Text="Adicionar Bolsista" OnClick="btnAdicionarBolsista_Click"/>
+
+                        <h6 class="text-muted text-uppercase small font-weight-bold mb-3">Despesas Vinculadas</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Descricao</th>
+                                        <th>Valor</th>
+                                        <th>Categoria</th>
+                                        <th>Data da Despesa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <asp:Repeater ID="rptDespesas" runat="server">
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td class="font-weight-bold">👤 <%# Eval("Descricao") %></td>
+                                                <td><%# Eval("Valor") %></td>
+                                                <td><span class="badge badge-secondary"><%# Eval("Categoria") %></span></td>
+                                                <td><%# Eval("DataDespesa", "{0:dd/MM/yyyy }") %></td>
+                                            </tr>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <asp:Label ID="lblSemDespesas" runat="server" Text="Nenhuma despesa vinculada a este projeto."
+                            CssClass="text-warning italic" Visible="false"></asp:Label>
 
                     </div>
-
                 </asp:Panel>
-
-
-
-                <asp:Label ID="lblAvisoGrid" runat="server" Text="Nenhum projeto na memória." 
-                    CssClass=" text-muted italic" Visible="false"></asp:Label>
-
-              
-
-
-                   
-            </div>
-
-            <div class="mt-4 text-center">
-                <asp:Label ID="lblMensagem" runat="server" CssClass="h6"></asp:Label>
             </div>
         </div>
     </div>
-</div>
-
 </asp:Content>
-    
+
 

@@ -15,67 +15,58 @@ namespace WebApplication1
     {
 
         /// <summary>
-        /// Controle txtNomeCoord.
+        /// Controle txtNome.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNomeCoord;
+        protected global::System.Web.UI.WebControls.TextBox txtNome;
 
         /// <summary>
-        /// Controle txtTitulacao.
+        /// Controle txtCPF.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTitulacao;
+        protected global::System.Web.UI.WebControls.TextBox txtCPF;
 
         /// <summary>
-        /// Controle txtCPFCoord.
+        /// Controle ddlTitulacao.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCPFCoord;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTitulacao;
 
         /// <summary>
-        /// Controle txtAreaDeAtuacao.
+        /// Controle txtArea.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAreaDeAtuacao;
+        protected global::System.Web.UI.WebControls.TextBox txtArea;
 
         /// <summary>
-        /// Controle txtEmailCoord.
+        /// Controle txtEmail.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmailCoord;
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
-        /// Controle btnSalvarCoord.
+        /// Controle btnSalvar.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSalvarCoord;
-
-        /// <summary>
-        /// Controle btnLimpar.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLimpar;
+        protected global::System.Web.UI.WebControls.Button btnSalvar;
 
         /// <summary>
         /// Controle plCoordenadores.
@@ -105,6 +96,78 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button btnFiltroNomeTitulacao;
 
         /// <summary>
+        /// Controle plExcluirCoordenador.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel plExcluirCoordenador;
+
+        /// <summary>
+        /// Controle ddlExcluirCoordenador.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlExcluirCoordenador;
+
+        /// <summary>
+        /// Controle btnEditarEmail.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditarEmail;
+
+        /// <summary>
+        /// Controle btnExcluirCoordernador.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnExcluirCoordernador;
+
+        /// <summary>
+        /// Controle plEditarEmail.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel plEditarEmail;
+
+        /// <summary>
+        /// Controle txtEditarEmailCoord.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEditarEmailCoord;
+
+        /// <summary>
+        /// Controle btnSalvarNovoEmail.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSalvarNovoEmail;
+
+        /// <summary>
+        /// Controle btnCancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelar;
+
+        /// <summary>
         /// Controle gridCoordenadores.
         /// </summary>
         /// <remarks>
@@ -114,13 +177,13 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.GridView gridCoordenadores;
 
         /// <summary>
-        /// Controle lblAvisoGrid.
+        /// Controle lblAviso.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAvisoGrid;
+        protected global::System.Web.UI.WebControls.Label lblAviso;
 
         /// <summary>
         /// Controle lblMensagem.

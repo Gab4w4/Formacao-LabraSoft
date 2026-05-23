@@ -78,13 +78,13 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button btnLimpar;
 
         /// <summary>
-        /// Controle plButtonFiltro.
+        /// Controle pnlFiltros.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel plButtonFiltro;
+        protected global::System.Web.UI.WebControls.Panel pnlFiltros;
 
         /// <summary>
         /// Controle btnFiltrarMulheres.
@@ -105,13 +105,13 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Button btnOrdemAlfabetica;
 
         /// <summary>
-        /// Controle btnRecarregarLista.
+        /// Controle btnVerTodos.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRecarregarLista;
+        protected global::System.Web.UI.WebControls.Button btnVerTodos;
 
         /// <summary>
         /// Controle gridBolsistas.

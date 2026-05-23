@@ -1,7 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastroBolsista.aspx.cs" Inherits="WebApplication1.CadastroBolsista" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container mt-5">
-        <div class="card shadow-sm mx-auto w-100">
+
+        <div class="card shadow-sm mx-auto">
             <div class="card-header bg-primary text-white text-center">
                 <h2 class="mb-0">📝 Cadastro de Bolsista</h2>
             </div>
@@ -50,22 +51,29 @@
                         CssClass="mt-2 btn btn-outline-secondary btn-lg btn-block" OnClick="btnLimpar_Click" />
 
                 </div>
-                <hr />
+                <hr />                
+                
                 <div class="mt-5">
                     <h3 class="text-secondary">📋 Lista de Bolsistas Cadastrados</h3>
-                    
-                    <asp:Panel ID="plButtonFiltro" runat="server" style="display:flex; justify-content:center; gap:15px">
-                        <asp:Button ID="btnFiltrarMulheres" CssClass="btn btn-primary" onClick="btnFiltrarMulheres_Click" runat="server" Text ="Filtrar Mulheres" />
-                        <asp:Button ID="btnOrdemAlfabetica" CssClass="btn btn-primary" onClick="btnOrdemAlfabetica_Click" runat="server" Text ="Ordem Alfabética" />
-                        <asp:Button ID="btnRecarregarLista" CssClass="btn btn-primary" onClick="btnRecarregarLista_Click" runat="server" Text ="Recarregar Lista" />
+                    <asp:Panel ID="pnlFiltros" runat="server" Visible="false">
+                        <div class="mt-4 mb-2 d-flex justify-content-between align-items-center">                        
+                            <div>
+                                <asp:Button ID="btnFiltrarMulheres" runat="server" Text="👩 Filtrar Mulheres" 
+                                    CssClass="btn btn-outline-info btn-sm" OnClick="btnFiltrarMulheres_Click" />
+            
+                                <asp:Button ID="btnOrdemAlfabetica" runat="server" Text="AZ Ordem Alfabética" 
+                                    CssClass="btn btn-outline-dark btn-sm" OnClick="btnOrdemAlfabetica_Click" />
+                
+                                <asp:Button ID="btnVerTodos" runat="server" Text="Mostrar Todos" 
+                                    CssClass="btn btn-link btn-sm text-muted" OnClick="btnVerTodos_Click" />                               
+                            </div>
+                        </div>
                     </asp:Panel>
-                    <%--style="display:flex; justify-content:center; gap:15px"--%>
-                    <br />
     
                     <asp:GridView ID="gridBolsistas" runat="server" 
                         CssClass="table table-hover table-striped border" 
                         AutoGenerateColumns="true" 
-                        GridLines="None">
+                        GridLines="None" DataKeyNames="ID">
                         <HeaderStyle CssClass="thead-dark" />
                     </asp:GridView>
 

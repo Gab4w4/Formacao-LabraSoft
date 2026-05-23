@@ -7,6 +7,7 @@ namespace WebApplication1
 {
     public partial class CadastroBolsista : System.Web.UI.Page
     {
+        private Repositorio repositorio = new Repositorio();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,6 +42,8 @@ namespace WebApplication1
                 novo.Sexo = ddlSexo.SelectedValue;
                 novo.DataNascimento = DateTime.Parse(txtDataNasc.Text);
 
+                repositorio.CadastrarBolsista(novo);
+
                 //1.5 Lógica provisória para não cadastrar o mesmo usuário duas vezes
                 if (Repositorio.ListaBolsistas.Any(b => b.CPF == txtCPF.Text))
                 {
@@ -52,7 +55,7 @@ namespace WebApplication1
                 }
 
                 // 2. ADICIONAR NA LISTA ESTÁTICA
-                Repositorio.ListaBolsistas.Add(novo);
+
 
                 // 3. Limpar os campos para o próximo cadastro
                 LimparCampos();
@@ -91,42 +94,61 @@ namespace WebApplication1
 
         private void AtualizarGrid()
         {
-            if (Repositorio.ListaBolsistas.Count > 0)
-            {
-                // 1. Dizemos ao Grid qual é a fonte de dados (nossa lista)
-                gridBolsistas.DataSource = Repositorio.ListaBolsistas;
 
-                // 2. O DataBind() "desenha" as linhas da tabela no HTML
+            var listaBolsistas = repositorio.ListarBolsistas();
+            if (listaBolsistas.Count > 0)
+            {
+                gridBolsistas.DataSource = listaBolsistas;
+
                 gridBolsistas.DataBind();
 
                 lblAvisoGrid.Visible = false;
                 gridBolsistas.Visible = true;
-                plButtonFiltro.Visible = true;
+
+                // MOSTRAR OS FILTROS
+                pnlFiltros.Visible = true;
             }
             else
             {
                 plButtonFiltro.Visible=false;
                 lblAvisoGrid.Visible = true;
                 gridBolsistas.Visible = false;
+
+                // ESCONDER OS FILTROS
+                pnlFiltros.Visible = false;
             }
         }
 
-        protected void btnRecarregarLista_Click(object sender, EventArgs e)
-        {
-            gridBolsistas.DataSource= Repositorio.ListaBolsistas;
-            gridBolsistas.DataBind();
-        }
-            
+        // 1. FILTRO: Mostra apenas quem tem Sexo == "F"
         protected void btnFiltrarMulheres_Click(object sender, EventArgs e)
         {
-            gridBolsistas.DataSource = Repositorio.ListaBolsistas.Where(x => x.Sexo == "F").ToList();
+            var listaBolsistasMulheres = repositorio.FiltrarMulheres();
+
+            gridBolsistas.DataSource = listaBolsistasMulheres;
             gridBolsistas.DataBind();
+
+            lblMensagem.Text = $"Exibindo {listaBolsistasMulheres.Count} mulheres encontradas.";
+            lblMensagem.CssClass = "alert alert-info d-block";
         }
 
+        // 2. ORDENAÇÃO: Organiza a lista por nome
         protected void btnOrdemAlfabetica_Click(object sender, EventArgs e)
         {
-            gridBolsistas.DataSource = Repositorio.ListaBolsistas.OrderBy(x => x.Nome).ToList();
+            var listaBolsistas = repositorio.OrdemAlfabeticaBolsistas();
+
+            gridBolsistas.DataSource = listaBolsistas;
             gridBolsistas.DataBind();
+
+            lblMensagem.Text = "Lista organizada por ordem alfabética.";
+            lblMensagem.CssClass = "alert alert-secondary d-block";
         }
+
+        // 3. RESET: Volta a exibir a lista original completa
+        protected void btnVerTodos_Click(object sender, EventArgs e)
+        {
+            AtualizarGrid();
+            lblMensagem.Text = "Exibindo lista completa.";
+            lblMensagem.CssClass = "alert alert-light d-block border";
+        }        
     }
 }

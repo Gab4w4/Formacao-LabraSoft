@@ -1,150 +1,460 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Web;
+using System.Web.Services.Protocols;
 
 namespace WebApplication1.Models
 {
     public class Repositorio
     {
-        public static List<Bolsista> ListaBolsistas = new List<Bolsista>(){
-            new Bolsista { Nome = "Romário Souza", CPF = "010.010.010-11", Matricula = "B0011", DataNascimento = new DateTime(2006, 08, 08), Sexo = "M"},
-            new Bolsista { Nome = "Ana Souza", CPF = "111.111.111-11", Matricula = "B001", DataNascimento = new DateTime(2000, 5, 10), Sexo = "F" },
-            new Bolsista { Nome = "Bruno Lima", CPF = "222.222.222-22", Matricula = "B002", DataNascimento = new DateTime(1999, 8, 20), Sexo = "M" },
-            new Bolsista { Nome = "Carla Mendes", CPF = "333.333.333-33", Matricula = "B003", DataNascimento = new DateTime(2001, 2, 15), Sexo = "F" },
-            new Bolsista { Nome = "Daniel Rocha", CPF = "444.444.444-44", Matricula = "B004", DataNascimento = new DateTime(1998, 12, 1), Sexo = "M" },
-            new Bolsista { Nome = "Eduarda Alves", CPF = "555.555.555-55", Matricula = "B005", DataNascimento = new DateTime(2002, 7, 30), Sexo = "F" },
-            new Bolsista { Nome = "Felipe Santos", CPF = "666.666.666-66", Matricula = "B006", DataNascimento = new DateTime(2000, 3, 25), Sexo = "M" },
-            new Bolsista { Nome = "Gabriela Costa", CPF = "777.777.777-77", Matricula = "B007", DataNascimento = new DateTime(2001, 11, 5), Sexo = "F" },
-            new Bolsista { Nome = "Henrique Martins", CPF = "888.888.888-88", Matricula = "B008", DataNascimento = new DateTime(1997, 6, 18), Sexo = "M" },
-            new Bolsista { Nome = "Isabela Ferreira", CPF = "999.999.999-99", Matricula = "B009", DataNascimento = new DateTime(2003, 9, 9), Sexo = "F" },
-            new Bolsista { Nome = "João Pereira", CPF = "000.000.000-00", Matricula = "B010", DataNascimento = new DateTime(1999, 1, 12), Sexo = "M" }
-        };
+        public static List<Bolsista> ListaBolsistas = new List<Bolsista>();
+        public static List<Coordenador> ListaCoordenadores = new List<Coordenador>();
+        public static List<Projeto> ListaProjetos = new List<Projeto>();
 
-        public static List<Coordenador> ListaCoordenadores = new List<Coordenador>()
+
+        private string bdConnection = ConfigurationManager.ConnectionStrings["LabraConnection"].ConnectionString;
+
+        public List<Coordenador> ListarCoordernadores()
         {
-            new Coordenador
-            {
-                Id = 1,
-                Nome = "Ana Souza",
-                CPF = "123.456.789-00",
-                Titulacao = "Doutora",
-                AreaAtuacao = "Engenharia de Software",
-                Email = "ana.souza@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 2,
-                Nome = "Carlos Lima",
-                CPF = "234.567.890-11",
-                Titulacao = "Mestre",
-                AreaAtuacao = "Banco de Dados",
-                Email = "carlos.lima@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 3,
-                Nome = "Mariana Oliveira",
-                CPF = "345.678.901-22",
-                Titulacao = "Doutora",
-                AreaAtuacao = "Inteligência Artificial",
-                Email = "mariana.oliveira@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 4,
-                Nome = "João Pereira",
-                CPF = "456.789.012-33",
-                Titulacao = "Especialista",
-                AreaAtuacao = "Redes de Computadores",
-                Email = "joao.pereira@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 5,
-                Nome = "Fernanda Costa",
-                CPF = "567.890.123-44",
-                Titulacao = "Mestre",
-                AreaAtuacao = "Segurança da Informação",
-                Email = "fernanda.costa@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 6,
-                Nome = "Ricardo Alves",
-                CPF = "678.901.234-55",
-                Titulacao = "Doutor",
-                AreaAtuacao = "Sistemas Distribuídos",
-                Email = "ricardo.alves@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 7,
-                Nome = "Juliana Martins",
-                CPF = "789.012.345-66",
-                Titulacao = "Especialista",
-                AreaAtuacao = "Desenvolvimento Web",
-                Email = "juliana.martins@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 8,
-                Nome = "Bruno Rocha",
-                CPF = "890.123.456-77",
-                Titulacao = "Mestre",
-                AreaAtuacao = "Computação em Nuvem",
-                Email = "bruno.rocha@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 9,
-                Nome = "Patrícia Gomes",
-                CPF = "901.234.567-88",
-                Titulacao = "Doutora",
-                AreaAtuacao = "Ciência de Dados",
-                Email = "patricia.gomes@exemplo.com"
-            },
-            new Coordenador
-            {
-                Id = 10,
-                Nome = "Eduardo Nunes",
-                CPF = "012.345.678-99",
-                Titulacao = "Especialista",
-                AreaAtuacao = "Arquitetura de Software",
-                Email = "eduardo.nunes@exemplo.com"
-            }
-                };
+            List<Coordenador> coordenadores = new List<Coordenador>();
 
-        public static List<Projeto> ListaProjetos = new List<Projeto>() {
-            new Projeto
+            using (SqlConnection connection = new SqlConnection(bdConnection))
             {
-                Titulo = "Sistema Inteligente de Monitoramento Ambiental",
-                AreaDeConhecimento = "Ciência da Computação",
-                VerbaAprovada = 50000f,
-                ValorDeBolsaIndividual = 1200f,
-                Coordenador = ListaCoordenadores[2],
-                Bolsistas = new List<Bolsista>
+                string sql = "SELECT Id, Nome, CPF, Titulacao, AreaAtuacao, Email FROM Coordenador";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    ListaBolsistas[3],
-                    ListaBolsistas[4],
-                    ListaBolsistas[5]
+                    Coordenador c = new Coordenador();
+                    c.Id = Convert.ToInt32(reader["ID"]);
+                    c.Nome = reader["Nome"].ToString();
+                    c.CPF = reader["CPF"].ToString();
+                    c.Titulacao = reader["Titulacao"].ToString();
+                    c.AreaAtuacao = reader["AreaAtuacao"].ToString();
+                    c.Email = reader["Email"].ToString();
+
+                    coordenadores.Add(c);
                 }
-            },
-            new Projeto
+
+            }
+            return coordenadores;
+        }
+
+        public List<Coordenador> BuscarNomeTitulacao(string filtro)
+        {
+            List<Coordenador> coordenadores = new List<Coordenador>();
+
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
             {
-                Titulo = "Análise de Dados para Saúde Pública",
-                AreaDeConhecimento = "Ciência de Dados",
-                VerbaAprovada = 75000f,
-                ValorDeBolsaIndividual = 1500f,
-                Coordenador = ListaCoordenadores[0], 
-                Bolsistas = new List<Bolsista>
+                string sql = "SELECT Id, Nome, CPF, Titulacao, AreaAtuacao, Email FROM Coordenador WHERE Nome LIKE @filtro OR Titulacao LIKE @filtro";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@filtro", $"%{filtro}%");
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    ListaBolsistas[0],
-                    ListaBolsistas[1],
-                    ListaBolsistas[2]
+                    Coordenador c = new Coordenador();
+                    c.Id = Convert.ToInt32(reader["ID"]);
+                    c.Nome = reader["Nome"].ToString();
+                    c.CPF = reader["CPF"].ToString();
+                    c.Titulacao = reader["Titulacao"].ToString();
+                    c.AreaAtuacao = reader["AreaAtuacao"].ToString();
+                    c.Email = reader["Email"].ToString();
+
+                    coordenadores.Add(c);
                 }
+
+            }
+            return coordenadores;
+
+        }
+
+        public void CadastrarCoordernador(Coordenador coordenador)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "INSERT INTO Coordenador(Nome, CPF, Titulacao, AreaAtuacao, Email) VALUES (@Nome, @CPF, @Titulacao, @AreaAtuacao, @Email)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@Nome", coordenador.Nome);
+                cmd.Parameters.AddWithValue("@CPF", coordenador.CPF);
+                cmd.Parameters.AddWithValue("@Titulacao", coordenador.Titulacao);
+                cmd.Parameters.AddWithValue("@AreaAtuacao", coordenador.AreaAtuacao);
+                cmd.Parameters.AddWithValue("@Email", coordenador.Email);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
             }
 
-        };
-    }    
+        }
+
+        public void ExcluirCoordenador(int idCoordenador)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "DELETE FROM Coordenador WHERE ID = @idCoordenador";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@idCoordenador", idCoordenador);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void EditarEmailCord(int idCoordenador, String emailNovo)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "UPDATE Coordenador SET email = @emailNovo WHERE ID = @idCoordenador";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@emailNovo", emailNovo);
+                cmd.Parameters.AddWithValue("@idCoordenador", idCoordenador);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public List<Bolsista> ListarBolsistas()
+        {
+            List<Bolsista> bolsistas = new List<Bolsista>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Id, Nome, CPF, Matricula, Sexo, DataNascimento FROM Bolsista";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Bolsista b = new Bolsista();
+                    b.ID = Convert.ToInt32(reader["ID"]);
+                    b.Nome = reader["Nome"].ToString();
+                    b.CPF = reader["CPF"].ToString();
+                    b.Matricula = reader["Matricula"].ToString();
+                    b.Sexo = reader["Sexo"].ToString();
+                    b.DataNascimento = Convert.ToDateTime(reader["DataNascimento"]);
+
+                    bolsistas.Add(b);
+                }
+
+            }
+            return bolsistas;
+        }
+
+        public List<Bolsista> ListarBolsistasDisponiveis()
+        {
+            List<Bolsista> bolsistas = new List<Bolsista>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Id, Nome FROM Bolsista WHERE NOT EXISTS (SELECT 1 FROM ProjetoBolsista WHERE ProjetoBolsista.bolsistaID = Bolsista.ID)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Bolsista b = new Bolsista();
+                    b.ID = Convert.ToInt32(reader["ID"]);
+                    b.Nome = reader["Nome"].ToString();
+                    
+
+                    bolsistas.Add(b);
+                }
+
+            }
+            return bolsistas;
+        }
+
+        public void CadastrarBolsista(Bolsista bolsista)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "INSERT INTO Bolsista(Nome, CPF, Matricula, Sexo, DataNascimento) VALUES (@Nome, @CPF, @Matricula, @Sexo, @DataNascimento)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@Nome", bolsista.Nome);
+                cmd.Parameters.AddWithValue("@CPF", bolsista.CPF);
+                cmd.Parameters.AddWithValue("@Matricula", bolsista.Matricula);
+                cmd.Parameters.AddWithValue("@Sexo", bolsista.Sexo);
+                cmd.Parameters.AddWithValue("@DataNascimento", bolsista.DataNascimento);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+        }
+
+        public List<Bolsista> FiltrarMulheres()
+        {
+            List<Bolsista> bolsistas = new List<Bolsista>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Id, Nome, CPF, Matricula, Sexo, DataNascimento FROM Bolsista WHERE Sexo = 'F'";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Bolsista b = new Bolsista();
+                    b.ID = Convert.ToInt32(reader["ID"]);
+                    b.Nome = reader["Nome"].ToString();
+                    b.CPF = reader["CPF"].ToString();
+                    b.Matricula = reader["Matricula"].ToString();
+                    b.Sexo = reader["Sexo"].ToString();
+                    b.DataNascimento = Convert.ToDateTime(reader["DataNascimento"]);
+
+                    bolsistas.Add(b);
+                }
+
+            }
+            return bolsistas;
+
+        }
+        public List<Bolsista> OrdemAlfabeticaBolsistas()
+        {
+            List<Bolsista> bolsistas = new List<Bolsista>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Id, Nome, CPF, Matricula, Sexo, DataNascimento FROM Bolsista ORDER BY Nome ASC";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Bolsista b = new Bolsista();
+                    b.ID = Convert.ToInt32(reader["ID"]);
+                    b.Nome = reader["Nome"].ToString();
+                    b.CPF = reader["CPF"].ToString();
+                    b.Matricula = reader["Matricula"].ToString();
+                    b.Sexo = reader["Sexo"].ToString();
+                    b.DataNascimento = Convert.ToDateTime(reader["DataNascimento"]);
+
+                    bolsistas.Add(b);
+                }
+
+            }
+            return bolsistas;
+
+        }
+
+        
+        public List<Projeto> ListarProjetos()
+        {
+            List<Projeto> projetos = new List<Projeto>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT p.ID, p.Titulo, p.AreaConhecimento, p.VerbaAprovada, p.ValorBolsaIndividual, c.Nome FROM Projeto p INNER JOIN Coordenador c ON p.CoordenadorID = c.ID";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Projeto p = new Projeto();
+                    p.ID = Convert.ToInt32(reader["ID"]);
+                    p.Titulo = reader["Titulo"].ToString();
+                    p.AreaConhecimento = reader["AreaConhecimento"].ToString();
+                    p.VerbaAprovada = Convert.ToDecimal(reader["VerbaAprovada"]);
+                    p.ValorBolsaIndividual = Convert.ToDecimal(reader["ValorBolsaIndividual"]);
+
+                    p.Responsavel = new Coordenador { Nome = reader["Nome"].ToString() };
+
+                    projetos.Add(p);
+                }
+
+            }
+            return projetos;
+        }
+
+        public int CadastrarProjeto(Projeto projeto)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "INSERT INTO Projeto(Titulo, AreaConhecimento, VerbaAprovada, ValorBolsaIndividual, CoordenadorID)OUTPUT INSERTED.ID VALUES (@Titulo, @AreaConhecimento, @VerbaAprovada, @ValorBolsaIndividual, @CoordenadorID)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@Titulo", projeto.Titulo);
+                cmd.Parameters.AddWithValue("@AreaConhecimento", projeto.AreaConhecimento);
+                cmd.Parameters.AddWithValue("@VerbaAprovada", projeto.VerbaAprovada);
+                cmd.Parameters.AddWithValue("@ValorBolsaIndividual", projeto.ValorBolsaIndividual);
+                cmd.Parameters.AddWithValue("@CoordenadorID", projeto.CoordenadorID);
+
+                connection.Open();
+                return (int) cmd.ExecuteScalar();
+            }
+        }
+
+        public void CadastrarAlunosVinculados(int id_bolsista, int id_projeto)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "INSERT INTO ProjetoBolsista(ProjetoID, BolsistaID) VALUES (@id_projeto, @id_bolsista)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@id_projeto", id_projeto);
+                cmd.Parameters.AddWithValue("@id_bolsista", id_bolsista);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void AdicionarDespesa(Despesa despesa)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "INSERT INTO Despesa(Descricao, Valor, DataDespesa, Categoria, ProjetoID) VALUES (@Descricao, @Valor, @DataDespesa, @Categoria, @ProjetoID)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@Descricao", despesa.Descricao);
+                cmd.Parameters.AddWithValue("@Valor", despesa.Valor);
+                cmd.Parameters.AddWithValue("@DataDespesa", despesa.DataDespesa);
+                cmd.Parameters.AddWithValue("@Categoria", despesa.Categoria);
+                cmd.Parameters.AddWithValue("@ProjetoID", despesa.ProjetoID);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+        }
+
+        public Projeto BuscarProjetoId(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT P.*, C.Nome, C.Titulacao FROM Projeto P INNER JOIN Coordenador C ON P.CoordenadorID = C.ID WHERE P.ID = @ID";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@ID", id);
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read()) {
+                    return new Projeto
+                    {
+                        ID = Convert.ToInt32(reader["ID"]),
+                        Titulo = reader["Titulo"].ToString(),
+                        AreaConhecimento = reader["AreaConhecimento"].ToString(),
+                        VerbaAprovada = Convert.ToDecimal(reader["VerbaAprovada"]),
+                        ValorBolsaIndividual = Convert.ToDecimal(reader["ValorBolsaIndividual"]),
+                        Responsavel = new Coordenador
+                        {
+                            Nome = reader["Nome"].ToString(),
+                            Titulacao = reader["Titulacao"].ToString()
+                        }
+
+                    };
+                }
+            }return null;
+        }
+
+        public List<Bolsista> listarBolsistasProjeto(int pID)
+        {
+            List<Bolsista> bolsistas = new List<Bolsista>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT B.ID, B.Nome, B.CPF, B.Sexo FROM Bolsista B INNER JOIN ProjetoBolsista PB ON B.ID = PB.BolsistaID WHERE PB.ProjetoID = @pID";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@pID", pID);
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    bolsistas.Add(new Bolsista
+                    {
+                        ID = Convert.ToInt32(reader["ID"]),
+                        Nome = reader["Nome"].ToString(),
+                        CPF = reader["CPF"].ToString(),
+                        Sexo = reader["Sexo"].ToString()
+                    });
+                }
+
+            }return bolsistas;
+        }
+
+        public List<Despesa> listarDespesas(int pID)
+        {
+            List<Despesa> despesas = new List<Despesa>();
+
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "SELECT Descricao, Valor, DataDespesa, Categoria FROM Despesa WHERE ProjetoID = @pID";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@pID", pID);
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    despesas.Add(new Despesa
+                    {
+                        Descricao = reader["Descricao"].ToString(),
+                        Valor = Convert.ToDecimal(reader["Valor"]),
+                        DataDespesa = Convert.ToDateTime(reader["DataDespesa"]),
+                        Categoria = reader["Categoria"].ToString()
+                    });
+                }
+
+            }
+            return despesas;
+        }
+
+        public void RemoverBolsista(int idBolsista, int idProjeto)
+        {
+            using (SqlConnection connection = new SqlConnection(bdConnection))
+            {
+                string sql = "DELETE FROM ProjetoBolsista WHERE ProjetoID = @idProjeto AND BolsistaID = @idBolsista";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@idBolsista", idBolsista);
+                cmd.Parameters.AddWithValue("@idProjeto", idProjeto);
+
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+               
+
+            }
+        }
+
+        //public decimal ObterDespesas(int id_projeto)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(bdConnection))
+        //    {
+        //        string sql = "SELECET SUM(Valor) AS Soma FROM Despesas WHERE ProjetoID = @id_projeto";
+        //        SqlCommand cmd = new SqlCommand(sql, connection);
+
+        //        cmd.Parameters.AddWithValue("@id_projeto", id_projeto);
+        //        var valor = 
+                
+
+        //        connection.Open();
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}  
+
+    }
 }

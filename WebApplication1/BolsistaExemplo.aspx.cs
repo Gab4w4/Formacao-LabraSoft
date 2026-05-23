@@ -6,6 +6,7 @@ namespace WebApplication1
 {
     public partial class BolsistaExemplo : System.Web.UI.Page
     {
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             // 1. INSTANCIAR A CLASSE
@@ -26,5 +27,7 @@ namespace WebApplication1
             // Joga o texto para dentro do componente na página
             lblResultado.Text = resultado;
         }
+
+
     }
 }
