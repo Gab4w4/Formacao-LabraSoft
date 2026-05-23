@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastroBolsista.aspx.cs" Inherits="WebApplication1.CadastroBolsista" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container mt-5">
+
         <div class="card shadow-sm mx-auto">
             <div class="card-header bg-primary text-white text-center">
                 <h2 class="mb-0">📝 Cadastro de Bolsista</h2>
@@ -77,7 +78,7 @@
                     </asp:GridView>
 
                     <asp:Label ID="lblAvisoGrid" runat="server" Text="Nenhum bolsista na memória." 
-                        CssClass="text-muted italic" Visible="false"></asp:Label>
+                        CssClass=" text-muted italic" Visible="false"></asp:Label>
                 </div>
 
                 <div class="mt-4 text-center">

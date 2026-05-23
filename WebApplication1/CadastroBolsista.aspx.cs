@@ -7,14 +7,15 @@ namespace WebApplication1
 {
     public partial class CadastroBolsista : System.Web.UI.Page
     {
-
         private Repositorio repositorio = new Repositorio();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Na primeira vez que a página carrega, podemos querer exibir a lista 
             if (!IsPostBack)
             {
                 AtualizarGrid();
+                
             }
         }
 
@@ -54,7 +55,7 @@ namespace WebApplication1
                 }
 
                 // 2. ADICIONAR NA LISTA ESTÁTICA
-                
+
 
                 // 3. Limpar os campos para o próximo cadastro
                 LimparCampos();
@@ -93,10 +94,12 @@ namespace WebApplication1
 
         private void AtualizarGrid()
         {
+
             var listaBolsistas = repositorio.ListarBolsistas();
             if (listaBolsistas.Count > 0)
             {
                 gridBolsistas.DataSource = listaBolsistas;
+
                 gridBolsistas.DataBind();
 
                 lblAvisoGrid.Visible = false;
@@ -107,6 +110,7 @@ namespace WebApplication1
             }
             else
             {
+                plButtonFiltro.Visible=false;
                 lblAvisoGrid.Visible = true;
                 gridBolsistas.Visible = false;
 
